@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -14,13 +17,13 @@ class Event
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $invited = null;
 
     #[ORM\Column(length: 255)]
     private ?string $team1 = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $team2 = null;
 
     #[ORM\Column(length: 100)]
