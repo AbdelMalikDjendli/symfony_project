@@ -4,50 +4,73 @@
 
 {% block body %}
 
-<section class="container my-3">
+<section class="container my-3 bg-light rounded">
     <div class = 'row'>
         <div class='col'>
 
-            <h1>Inscription</h1>
+            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Inscription</h2>
 
             {{ form_start(registrationForm) }}
 
            <fieldset>
-               <legend>Mon identité</legend>
-               {{ form_row(registrationForm.lastName, {
-                   label: 'Nom'
-               }) }}
-               {{ form_row(registrationForm.firstName, {
-                   label: 'Prénom'
-               }) }}
+               <legend class="text-center">
+                   <img src="{{ asset("images/person.svg") }}" alt="person" width="22" height="22">
+                   Mon identité
+               </legend>
+               <div class="my-3">{{ form_row(registrationForm.lastName, {
+                       label: 'Nom'
+                   }) }}
+               </div>
+               <div class="my-3">
+                   {{ form_row(registrationForm.firstName, {
+                       label: 'Prénom'
+                   }) }}
+               </div>
            </fieldset>
-            <fieldset>
-                <legend>Mes coordonnées</legend>
-                {{ form_row(registrationForm.ville, {
-                    label: 'Ville'
-                }) }}
-                {{ form_row(registrationForm.codePostal, {
-                    label: 'Code postal'
-                }) }}
-                {{ form_row(registrationForm.numTel, {
-                    label: 'Numéro de téléphone'
-                }) }}
+            <fieldset >
+                <legend class="text-center">
+                    <img src="{{ asset("images/info-circle.svg") }}" alt="info" width="22" height="22">
+                    Mes coordonnées
+                </legend>
+                <div class="my-3">
+                    {{ form_row(registrationForm.ville, {
+                        label: 'Ville'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.codePostal, {
+                        label: 'Code postal'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.numTel, {
+                        label: 'Numéro de téléphone'
+                    }) }}
+                </div>
             </fieldset>
-            <fieldset>
-                <legend>Mes identifiants</legend>
-                {{ form_row(registrationForm.email, {
-                    label:'E-mail'
-                }) }}
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Mot de passe'
-                }) }}
-
-                {{ form_row(registrationForm.pseudo, {
-                    label: 'Nom d\'utilisateur'
-                }) }}
+            <fieldset >
+                <legend class="text-center">
+                    <img src="{{ asset("images/box-arrow-in-right.svg") }}" alt="id" width="22" height="22">
+                    Mes identifiants
+                </legend>
+                <div class="my-3">
+                    {{ form_row(registrationForm.email, {
+                        label:'E-mail'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Mot de passe'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.pseudo, {
+                        label: 'Nom d\'utilisateur'
+                    }) }}
+                </div>
             </fieldset>
 
-            <button type="submit" class="btn btn-lg btn-primary my-3">S'incrire</button>
+            <div class="text-center"><button type="submit" class="btn btn-lg btn-success my-3">S'inscrire</button></div>
 
             {{ form_end(registrationForm) }}
 
