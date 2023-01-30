@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,11 +19,6 @@ class Event
     #[ORM\Column]
     private ?int $invited = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $team1 = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $team2 = null;
 
     #[ORM\Column(length: 100)]
     private ?string $level = null;
@@ -43,6 +40,14 @@ class Event
     #[ORM\JoinColumn(nullable: false)]
     private ?Five $five = null;
 
+    #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'match')]
+    private Collection $teams;
+
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
+
 
 
     public function getId(): ?int
@@ -62,29 +67,9 @@ class Event
         return $this;
     }
 
-    public function getTeam1(): ?string
-    {
-        return $this->team1;
-    }
 
-    public function setTeam1(string $team1): self
-    {
-        $this->team1 = $team1;
 
-        return $this;
-    }
 
-    public function getTeam2(): ?string
-    {
-        return $this->team2;
-    }
-
-    public function setTeam2(string $team2): self
-    {
-        $this->team2 = $team2;
-
-        return $this;
-    }
 
     public function getLevel(): ?string
     {
@@ -154,6 +139,33 @@ class Event
     public function setFive(?Five $five): self
     {
         $this->five = $five;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+            $team->addParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            $team->removeParent($this);
+        }
 
         return $this;
     }
