@@ -18,7 +18,6 @@ class MatchCreatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('team1', TextType::class, ['required' => true])
             ->add('level', TextType::class, ['required' => false])
             ->add('date', DateType::class, ['required' => true,
             'input' => 'string'])
