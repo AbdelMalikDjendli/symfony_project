@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -19,12 +21,6 @@ class Event
 
     #[ORM\Column(nullable: true)]
     private ?int $invited = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $team1 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $team2 = null;
 
     #[ORM\Column(length: 100)]
     private ?string $level = null;
@@ -45,6 +41,14 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Five $five = null;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'match')]
+    private Collection $teams;
+
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
 
 
 
@@ -157,6 +161,33 @@ class Event
     public function setFive(?Five $five): self
     {
         $this->five = $five;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+            $team->addParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            $team->removeParent($this);
+        }
 
         return $this;
     }
