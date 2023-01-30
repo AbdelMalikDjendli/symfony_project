@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
 use App\Form\MatchCreatorType;
 use App\Form\JoinMatchType;
+use App\FormHandler\JoinMatchHandler;
 
 
 class MatchController extends AbstractController
