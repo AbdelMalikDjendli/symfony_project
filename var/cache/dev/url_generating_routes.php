@@ -20,4 +20,5 @@ return [
     'app_match' => [[], ['_controller' => 'App\\Controller\\MatchController::index'], [], [['text', '/match']], [], [], []],
     'app_match_join' => [['id'], ['_controller' => 'App\\Controller\\MatchController::join'], [], [['text', '/joinmatch/'], ['variable', '/', '[^/]++', 'id', true], ['text', '/match']], [], [], []],
     'app_match_create' => [[], ['_controller' => 'App\\Controller\\MatchController::create'], [], [['text', '/match/create']], [], [], []],
+    'app_team' => [[], ['_controller' => 'App\\Controller\\TeamController::index'], [], [['text', '/team']], [], [], []],
 ];

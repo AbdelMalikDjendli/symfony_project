@@ -17,6 +17,7 @@ return [
         '/homepage' => [[['_route' => 'app_homepage', '_controller' => 'App\\Controller\\HomepageController::index'], null, null, null, false, false, null]],
         '/match' => [[['_route' => 'app_match', '_controller' => 'App\\Controller\\MatchController::index'], null, null, null, false, false, null]],
         '/match/create' => [[['_route' => 'app_match_create', '_controller' => 'App\\Controller\\MatchController::create'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/team' => [[['_route' => 'app_team', '_controller' => 'App\\Controller\\TeamController::index'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'

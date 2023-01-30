@@ -162,3 +162,6 @@ af8954,127.0.0.1,GET,http://symfony-project.local/match/1/joinmatch/,1675073542,
 1db033,127.0.0.1,GET,http://symfony-project.local/match/1/joinmatch/,1675073609,,200
 52d960,127.0.0.1,POST,http://symfony-project.local/match/1/joinmatch/,1675073617,,200
 aeac9f,127.0.0.1,POST,http://symfony-project.local/match/1/joinmatch/,1675073634,,200
+021a1b,127.0.0.1,GET,http://symfony-project.local/connexion,1675100128,8b09ac,404
+8b09ac,127.0.0.1,GET,http://symfony-project.local/connexion,1675100128,,404
+3e6e2e,127.0.0.1,GET,http://symfony-project.local/match/create,1675100212,,200
