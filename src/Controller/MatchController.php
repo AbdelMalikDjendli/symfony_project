@@ -2,24 +2,21 @@
 
 namespace App\Controller;
 
-<<<<<<< HEAD
+
 use App\Entity\Event;
 use App\Form\JoinMatchType;
 
 use App\FormHandler\JoinMatchHandler;
-=======
+
 use App\FormHandler\MatchFormHandler;
->>>>>>> origin/formMatch
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-<<<<<<< HEAD
-=======
-use App\Entity\Event;
+
 use App\Form\MatchCreatorType;
 
->>>>>>> origin/formMatch
+
 
 class MatchController extends AbstractController
 {
@@ -31,7 +28,7 @@ class MatchController extends AbstractController
         ]);
     }
 
-<<<<<<< HEAD
+
 
     #[Route('/match/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
     public function join(Request $request, JoinMatchHandler $joinMatchHandler): Response
@@ -53,7 +50,7 @@ class MatchController extends AbstractController
 
     }
 
-=======
+
     #[Route('/match/create', name: 'app_match_create', methods: ['GET', 'POST'])]
     public function create(Request $request, MatchFormHandler $matchFormHandler): Response
     {
@@ -74,5 +71,5 @@ class MatchController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
->>>>>>> origin/formMatch
+
 }
