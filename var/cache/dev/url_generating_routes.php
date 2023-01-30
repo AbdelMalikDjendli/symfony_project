@@ -18,5 +18,6 @@ return [
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     'app_homepage' => [[], ['_controller' => 'App\\Controller\\HomepageController::index'], [], [['text', '/homepage']], [], [], []],
     'app_match' => [[], ['_controller' => 'App\\Controller\\MatchController::index'], [], [['text', '/match']], [], [], []],
+    'app_match_join' => [['id'], ['_controller' => 'App\\Controller\\MatchController::join'], [], [['text', '/joinmatch/'], ['variable', '/', '[^/]++', 'id', true], ['text', '/match']], [], [], []],
     'app_match_create' => [[], ['_controller' => 'App\\Controller\\MatchController::create'], [], [['text', '/match/create']], [], [], []],
 ];
