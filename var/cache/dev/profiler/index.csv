@@ -150,3 +150,15 @@ a4755a,127.0.0.1,POST,http://snowaddict-symfony.local/match/create,1674992815,,5
 00f422,127.0.0.1,GET,http://snowaddict-symfony.local/match/create,1674993012,15843e,500
 15843e,127.0.0.1,POST,http://snowaddict-symfony.local/match/create,1674993012,,500
 cd89df,127.0.0.1,POST,http://snowaddict-symfony.local/match/create,1674993193,,200
+06893b,127.0.0.1,GET,http://symfony-project.local/inscription,1675069467,0926a0,404
+0926a0,127.0.0.1,GET,http://symfony-project.local/inscription,1675069467,,404
+1dd6c7,127.0.0.1,GET,http://symfony-project.local/connexion,1675069488,7b67bc,404
+7b67bc,127.0.0.1,GET,http://symfony-project.local/connexion,1675069488,,404
+684ae9,127.0.0.1,GET,http://symfony-project.local/match/joinmatch,1675069497,,200
+dfba30,127.0.0.1,GET,http://symfony-project.local/match/create,1675069510,,200
+7f91f1,127.0.0.1,GET,http://symfony-project.local/match/1/joinmatch,1675073541,,301
+39b780,127.0.0.1,GET,http://symfony-project.local/match/1/joinmatch/,1675073542,af8954,500
+af8954,127.0.0.1,GET,http://symfony-project.local/match/1/joinmatch/,1675073542,,500
+1db033,127.0.0.1,GET,http://symfony-project.local/match/1/joinmatch/,1675073609,,200
+52d960,127.0.0.1,POST,http://symfony-project.local/match/1/joinmatch/,1675073617,,200
+aeac9f,127.0.0.1,POST,http://symfony-project.local/match/1/joinmatch/,1675073634,,200

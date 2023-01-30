@@ -9,6 +9,7 @@ use App\Form\JoinMatchType;
 use App\FormHandler\JoinMatchHandler;
 
 use App\FormHandler\MatchFormHandler;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,10 +31,10 @@ class MatchController extends AbstractController
 
 
 
-    #[Route('/match/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
-    public function join(Request $request, JoinMatchHandler $joinMatchHandler): Response
+    #[Route('/match/{id}/joinmatch/', name: 'app_match_join', methods: ['GET', 'POST'])]
+
+    public function join(Request $request, JoinMatchHandler $joinMatchHandler, Event $match): Response
     {
-        $match = new Event();
 
         $form = $this->createForm(JoinMatchType::class, $match);
 
