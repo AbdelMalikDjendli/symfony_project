@@ -20,4 +20,8 @@ return [
     'app_match' => [[], ['_controller' => 'App\\Controller\\MatchController::index'], [], [['text', '/match']], [], [], []],
     'app_match_join' => [['id'], ['_controller' => 'App\\Controller\\MatchController::join'], [], [['text', '/joinmatch/'], ['variable', '/', '[^/]++', 'id', true], ['text', '/match']], [], [], []],
     'app_match_create' => [[], ['_controller' => 'App\\Controller\\MatchController::create'], [], [['text', '/match/create']], [], [], []],
+    'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/inscription']], [], [], []],
+    'app_login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/connexion']], [], [], []],
+    'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/deconnexion']], [], [], []],
+    'app_team' => [[], ['_controller' => 'App\\Controller\\TeamController::index'], [], [['text', '/team']], [], [], []],
 ];

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Event;
+use App\Entity\User;
 use App\Form\JoinMatchType;
 
 use App\FormHandler\JoinMatchHandler;
@@ -53,7 +54,7 @@ class MatchController extends AbstractController
 
 
     #[Route('/match/create', name: 'app_match_create', methods: ['GET', 'POST'])]
-    public function create(Request $request, MatchFormHandler $matchFormHandler): Response
+    public function create(Request $request, MatchFormHandler $matchFormHandler, User $user): Response
     {
         $match = new Event();
 
@@ -62,7 +63,7 @@ class MatchController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             echo "form envoyé";
-            $matchFormHandler->handleForm($match);
+            $matchFormHandler->handleForm($match, $user);
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
         }
 

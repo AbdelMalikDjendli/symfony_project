@@ -17,6 +17,10 @@ return [
         '/homepage' => [[['_route' => 'app_homepage', '_controller' => 'App\\Controller\\HomepageController::index'], null, null, null, false, false, null]],
         '/match' => [[['_route' => 'app_match', '_controller' => 'App\\Controller\\MatchController::index'], null, null, null, false, false, null]],
         '/match/create' => [[['_route' => 'app_match_create', '_controller' => 'App\\Controller\\MatchController::create'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/inscription' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
+        '/connexion' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
+        '/deconnexion' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
+        '/team' => [[['_route' => 'app_team', '_controller' => 'App\\Controller\\TeamController::index'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
