@@ -1,16 +1,56 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Crée ton équipe{% endblock %}
 
 {% block body %}
 
-    <title> Crée ton équipe</title>
-    <h1>test</h1>
+<section class="container my-3 bg-light rounded">
+    <div class = 'row'>
+        <div class='col'>
 
-    {{ form_start(form) }}
+            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton équipe</h2>
 
-    {{ form(form) }}
+            {{ form_start(form) }}
 
-    {{ form_end(form) }}
+            <fieldset>
+                <div class="row text-center my-3">
+                <div class="mb-3" >{{ form_row(form.name, {
+                        label: 'Nom de l\'équipe '
+                    }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.player1, {
+                        label: 'Joueur 1 '
+                    }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.player2, {
+                        label: 'Joueur 2  '
+                    }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.player3, {
+                        label: 'Joueur 3 '
+                    }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.player4, {
+                        label: 'Joueur 4  '
+                    }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.player5, {
+                        label: 'Joueur 5  '
+                    }) }}
+                </div>
+            </div>
+            </fieldset>
 
-{% endblock %}
 
+            <div class="text-center"><button type="submit" class="btn btn-lg btn-success my-3">Crée ton équipe</button></div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+        {% endblock %}

@@ -20,7 +20,7 @@ class CreateTeamType extends AbstractType
             ->add('player3', TextType::class, ['required' => true, 'label' => 'Joueur 3', ])
             ->add('player4', TextType::class, ['required' => true, 'label' => 'Joueur 4', ])
             ->add('player5', TextType::class,['required' => true, 'label' => 'Joueur 5', ])
-            ->add('submit', SubmitType::class, ['label' => 'Crée l\'équipe',])
+
 
 
         ;
