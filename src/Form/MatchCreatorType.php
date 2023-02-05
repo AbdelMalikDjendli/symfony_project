@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Entity\Five;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,19 +21,43 @@ class MatchCreatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('level', TextType::class, ['required' => false])
-            ->add('date', DateType::class, ['required' => true,
-                'input' => 'string'])
-            ->add('hour', TimeType::class, ['required' => true, 'input' => 'string'])
-            ->add('description', TextareaType::class, ['required' => false])
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('level',
+                ChoiceType::class, [
+                    'expanded' => 'true',
+                    'choices' => [
+                        'Débutant' => "begginer",
+                        'Intermédiaire' => "intermediate",
+                        'Confirmé' => "confirmed",
+                        "Non renseigné" => 'non renseigné'
+                    ]])
+            ->add('date',
+                DateType::class, [
+                    'required' => true,
+                    'input' => 'string']
+            )
+            ->add('hour',
+                TimeType::class, [
+                    'required' => true,
+                    'input' => 'string']
+            )
+            ->add('description',
+                TextareaType::class, [
+                    'required' => false]
+            )
+            ->add('five', EntityType::class, [
+                'class' => Five::class,
+                'choice_label' => 'name'
+            ])
+            ->add('submit',
+                SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
-        ]);
+        ])
+
+        ;
     }
 }

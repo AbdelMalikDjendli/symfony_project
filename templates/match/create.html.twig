@@ -1,11 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{# Pas encore de style appliqué #}
+
+
+{% block title %}Crée un match{% endblock %}
 
 {% block body %}
-{{ form_start(form) }}
 
-{{ form(form) }}
+<section class="container my-3 bg-light rounded">
+    <div class = 'row'>
+        <div class='col'>
+
+            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton match</h2>
+
+            {{ form_start(form) }}
+
+            <fieldset>
+
+            <div class="my-3 form-check form-check-inline">
+                {{ form_row(form.level)}}
+            </div>
+            </fieldset>
+        </div>
+
+    </div>
+</section>
+
 
 {{ form_end(form) }}
 {% endblock %}

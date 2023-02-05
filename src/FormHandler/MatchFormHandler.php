@@ -24,10 +24,6 @@ final class MatchFormHandler
         # récupère l'utilisateur transmis par le controlleur
         $match->setOrganizer($user);
 
-
-        $five = $this->defaultFive();
-        $match -> setFive($five);
-
         $this->entityManager->persist($match);
         $this->entityManager->flush();
     }
