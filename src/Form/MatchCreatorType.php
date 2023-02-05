@@ -4,9 +4,15 @@ namespace App\Form;
 
 use App\Entity\Event;
 use App\Entity\Five;
+use App\Entity\Team;
+use App\Entity\User;
+
+use App\Repository\EventRepository;
+use App\Repository\TeamRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,7 +26,10 @@ class MatchCreatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $user = $options['data']->getOrganizer();
+
         $builder
+
             ->add('level',
                 ChoiceType::class, [
                     'expanded' => 'true',
@@ -30,6 +39,19 @@ class MatchCreatorType extends AbstractType
                         'Confirmé' => "confirmed",
                         "Non renseigné" => 'non renseigné'
                     ]])
+            ->add('teams',
+                EntityType::class, [
+                    'mapped' => false,
+                    'class' => Team::class,
+                    'choice_label' => 'name',
+                    'query_builder' => function (TeamRepository $teamRepository) use ($user){
+                        return $teamRepository
+                            ->createQueryBuilder('request')
+                            ->where('request.creator = :user')
+                            ->setParameter('user', $user);
+                    }
+
+                ])
             ->add('date',
                 DateType::class, [
                     'required' => true,

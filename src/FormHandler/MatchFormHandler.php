@@ -21,8 +21,6 @@ final class MatchFormHandler
     # Equipe pas encore créée par l'utilisateur
     public function handleForm(Event $match, User $user): void
     {
-        # récupère l'utilisateur transmis par le controlleur
-        $match->setOrganizer($user);
 
         $this->entityManager->persist($match);
         $this->entityManager->flush();
