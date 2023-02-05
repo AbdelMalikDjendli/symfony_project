@@ -42,7 +42,17 @@ class Event
     private ?Five $five = null;
 
     #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'match')]
-    private Collection $teams;
+    #[ORM\JoinTable("team_event")]
+    private Collection $teams_event;
+
+
+    /**
+     * @return Collection
+     */
+    public function getTeamsEvent(): Collection
+    {
+        return $this->teams_event;
+    }
 
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $winner = null;
@@ -52,7 +62,7 @@ class Event
 
     public function __construct()
     {
-        $this->teams = new ArrayCollection();
+        $this->teams_event = new ArrayCollection();
     }
 
 
@@ -150,18 +160,10 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection<int, Team>
-     */
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
     public function addTeam(Team $team): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
+        if (!$this->teams_event->contains($team)) {
+            $this->teams_event->add($team);
             $team->addParent($this);
         }
 
@@ -170,7 +172,7 @@ class Event
 
     public function removeTeam(Team $team): self
     {
-        if ($this->teams->removeElement($team)) {
+        if ($this->teams_event->removeElement($team)) {
             $team->removeParent($this);
         }
 

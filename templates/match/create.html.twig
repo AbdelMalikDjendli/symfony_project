@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}Crée un match{% endblock %}
+
+{% block body %}
+
+<section class="container my-3 bg-light rounded">
+    <div class = 'row'>
+        <div class='col'>
+
+            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton match</h2>
+
+            {{ form_start(form) }}
+
+            <fieldset>
+
+            <div class="my-3 form-check">
+                {{ form_row(form.level)}}
+            </div>
+            </fieldset>
+
+            <div class="my-3 selectpicker">
+                {{ form_row(form.teams_event)}}
+            </div>
+
+            <div class="my-3">
+                {{ form_row(form.date)}}
+            </div>
+
+            <div class="my-3">
+                {{ form_row(form.hour)}}
+            </div>
+
+            <div class="my-3 form-check form-check-inline">
+                {{ form_row(form.description)}}
+            </div>
+
+            <div class="my-3 selectpicker">
+                {{ form_row(form.five)}}
+            </div>
+
+            <div class="my-3 form-check form-check-inline">
+                {{ form_row(form.submit)}}
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+{{ form_end(form) }}
+{% endblock %}

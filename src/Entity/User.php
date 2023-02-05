@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -56,12 +57,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $parent;
 
     #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Team::class)]
-    private Collection $teams;
+    private Collection $teams_user;
 
     public function __construct()
     {
         $this->parent = new ArrayCollection();
-        $this->teams = new ArrayCollection();
+        $this->teams_user = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
     }
 
@@ -255,13 +256,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getTeams(): Collection
     {
-        return $this->teams;
+        return $this->teams_user;
     }
 
     public function addTeam(Team $team): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
+        if (!$this->teams_user->contains($team)) {
+            $this->teams_user->add($team);
             $team->setCreator($this);
         }
 
@@ -270,7 +271,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeTeam(Team $team): self
     {
-        if ($this->teams->removeElement($team)) {
+        if ($this->teams_user->removeElement($team)) {
             // set the owning side to null (unless already changed)
             if ($team->getCreator() === $this) {
                 $team->setCreator(null);
