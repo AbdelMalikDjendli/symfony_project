@@ -33,10 +33,10 @@ class Team
     #[ORM\Column(length: 150)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'teams')]
+    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'teams_event')]
     private Collection $match;
 
-    #[ORM\ManyToOne(inversedBy: 'teams')]
+    #[ORM\ManyToOne(inversedBy: 'teams_user')]
     private ?User $creator = null;
 
     public function __construct()

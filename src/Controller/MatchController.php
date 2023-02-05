@@ -36,13 +36,6 @@ class MatchController extends AbstractController
         # instanciation du match (vide)
         $match = new Event();
 
-        # si l'utilisateur n'est pas connecté
-        if($user == null){
-
-        }
-
-        else {
-
             # indique l'utilisateur qui crée le match
             $match->setOrganizer($user);
 
@@ -54,10 +47,17 @@ class MatchController extends AbstractController
 
             # lorsque la requête est envoyée et vérifiée
             if ($form->isSubmitted() && $form->isValid()) {
+
                 echo "form envoyé";
 
+                # récupération de l'objet team depuis le formulaire
+                $team = $form->get('teams_event')->getData();
+                $entityManager->persist($team);
+
                 # gestion des données reçues
-                $matchFormHandler->handleForm($match, $user);
+                $match->addTeam($team);
+                $this->entityManager->persist($match);
+                $this->entityManager->flush();
 
                 # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
             }
@@ -68,6 +68,6 @@ class MatchController extends AbstractController
             ]);
         }
 
-    }
+
 
 }

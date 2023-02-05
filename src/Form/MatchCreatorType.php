@@ -39,7 +39,7 @@ class MatchCreatorType extends AbstractType
                         'Confirmé' => "confirmed",
                         "Non renseigné" => 'non renseigné'
                     ]])
-            ->add('teams',
+            ->add('teams_event',
                 EntityType::class, [
                     'mapped' => false,
                     'class' => Team::class,
@@ -71,7 +71,8 @@ class MatchCreatorType extends AbstractType
                 'choice_label' => 'name'
             ])
             ->add('submit',
-                SubmitType::class);
+                SubmitType::class,
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

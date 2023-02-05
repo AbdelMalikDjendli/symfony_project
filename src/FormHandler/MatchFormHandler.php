@@ -4,6 +4,7 @@ namespace App\FormHandler;
 use App\Entity\Event;
 
 use App\Entity\Five;
+use App\Entity\Team;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,9 +20,9 @@ final class MatchFormHandler
     }
 
     # Equipe pas encore créée par l'utilisateur
-    public function handleForm(Event $match, User $user): void
+    public function handleForm(Event $match, Team $team): void
     {
-
+        $match->addTeam($team);
         $this->entityManager->persist($match);
         $this->entityManager->flush();
     }
