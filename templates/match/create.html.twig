@@ -16,10 +16,35 @@
 
             <fieldset>
 
-            <div class="my-3 form-check form-check-inline">
+            <div class="my-3 form-check">
                 {{ form_row(form.level)}}
             </div>
             </fieldset>
+
+            <div class="my-3 selectpicker">
+                {{ form_row(form.teams_event)}}
+            </div>
+
+            <div class="my-3">
+                {{ form_row(form.date)}}
+            </div>
+
+            <div class="my-3">
+                {{ form_row(form.hour)}}
+            </div>
+
+            <div class="my-3 form-check form-check-inline">
+                {{ form_row(form.description)}}
+            </div>
+
+            <div class="my-3 selectpicker">
+                {{ form_row(form.five)}}
+            </div>
+
+            <div class="my-3 form-check form-check-inline">
+                {{ form_row(form.submit)}}
+            </div>
+
         </div>
 
     </div>
