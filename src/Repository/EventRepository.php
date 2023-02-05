@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +21,7 @@ class EventRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Event::class);
     }
+
 
     public function save(Event $entity, bool $flush = false): void
     {
@@ -42,17 +44,38 @@ class EventRepository extends ServiceEntityRepository
 //    /**
 //     * @return Event[] Returns an array of Event objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   public function findMatchCeatedOrJoinded($id,$pseudo): array
+   {
+       return $this->createQueryBuilder('e')
+           ->andWhere('e.invited = :pseudo')
+           ->orWhere('e.organizer=:id')
+           ->setParameter('id', $id)
+           ->setParameter('pseudo', $pseudo)
+          ->orderBy('e.date', 'DESC')
+          ->getQuery()
+           ->getResult()
+           ;
+   }
+
+    public function findMatchWin($pseudo): array
+    {
+        return $this->createQueryBuilder('e')
+            ->Where('e.winner = :pseudo')
+            ->setParameter('pseudo', $pseudo)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findMatchLoose($pseudo): array
+    {
+        return $this->createQueryBuilder('e')
+            ->Where('e.looser = :pseudo')
+            ->setParameter('pseudo', $pseudo)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
 //    public function findOneBySomeField($value): ?Event
 //    {

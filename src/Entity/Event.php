@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -16,8 +17,8 @@ class Event
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $invited = null;
+    #[ORM\Column(nullable: true)]
+    private ?string $invited = null;
 
 
     #[ORM\Column(length: 100)]
@@ -27,7 +28,7 @@ class Event
     private ?string $hour = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $date = null;
+    private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -43,6 +44,12 @@ class Event
     #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'match')]
     private Collection $teams;
 
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $winner = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $looser = null;
+
     public function __construct()
     {
         $this->teams = new ArrayCollection();
@@ -55,12 +62,12 @@ class Event
         return $this->id;
     }
 
-    public function getInvited(): ?int
+    public function getInvited(): ?string
     {
         return $this->invited;
     }
 
-    public function setInvited(int $invited): self
+    public function setInvited(string $invited): self
     {
         $this->invited = $invited;
 
@@ -95,12 +102,12 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDate(): ?\DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(string $date): self
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
 
@@ -166,6 +173,30 @@ class Event
         if ($this->teams->removeElement($team)) {
             $team->removeParent($this);
         }
+
+        return $this;
+    }
+
+    public function getWinner(): ?string
+    {
+        return $this->winner;
+    }
+
+    public function setWinner(?string $winner): self
+    {
+        $this->winner = $winner;
+
+        return $this;
+    }
+
+    public function getLooser(): ?string
+    {
+        return $this->looser;
+    }
+
+    public function setLooser(?string $looser): self
+    {
+        $this->looser = $looser;
 
         return $this;
     }
