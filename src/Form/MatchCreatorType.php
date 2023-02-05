@@ -55,7 +55,7 @@ class MatchCreatorType extends AbstractType
             ->add('date',
                 DateType::class, [
                     'required' => true,
-                    'input' => 'string']
+                    'input' => 'datetime_immutable']
             )
             ->add('hour',
                 TimeType::class, [
