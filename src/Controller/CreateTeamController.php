@@ -22,7 +22,7 @@ class CreateTeamController extends AbstractController
     }
 
     #[Route('/user/{id}/createteam/', name: 'app_create_team', methods: ['GET', 'POST'])]
-    public function create(Request $request, CreateTeamHandlerr $createTeamHandler, User $user): Response
+    public function create(Request $request, CreateTeamHandlerr $createTeamHandler, int $id): Response
     {
         $equipe = new Team();
 
@@ -31,7 +31,7 @@ class CreateTeamController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             echo "form envoyé";
-            $createTeamHandler->handleForm($equipe, $user);
+            $createTeamHandler->handleForm($equipe, $id);
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
         }
 

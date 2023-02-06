@@ -24,11 +24,11 @@ final class CreateTeamHandlerr
     }
 
     # Equipe pas encore créée par l'utilisateur
-    public function handleForm(Team $equipe): void
+    public function handleForm(Team $equipe, int $id): void
     {
-        $user = $this->defaultUser();
 
-        $equipe->setCreator($user);
+
+        $equipe->setCreator($this->doctrine->getRepository(User::class)->find($id));
 
 
 
@@ -39,8 +39,8 @@ final class CreateTeamHandlerr
 
     # Utilisation d'un utilisateur par défaut déjà créé dans la base de donnée
     # Cet utilisateur doit être la personne connectée
-    public function defaultUser(): User{
-        return $this->doctrine->getRepository(User::class)->find(1);
-    }
+    /* public function defaultUser(): User{
+        return $this->doctrine->getRepository(User::class)->find(id);
+    } */
 
 }
