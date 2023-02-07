@@ -54,7 +54,7 @@
                                 <td>{{ match.date|date('d/m/Y') }}</td>
                                 <td>{{ match.hour }}</td>
                                 <td>{{ match.five.name }}</td>
-                                <td>{{ match.teams[0].name }} VS {{ match.teams[1].name }}</td>
+                                <td>{{ match.teamsevent[0].name }} VS {{ match.teamsevent[1].name }}</td>
                                 <td><a href="{{ path('app_profil', {id: match.organizer.id}) }}" class="link-success">{{ match.organizer.pseudo }}</a></td>
                                 <td><a href="{{ path('app_profil', {id: invited[match.invited]}) }}" class="link-success">{{ match.invited }}</a></td>
                                     {% if match.winner is not null %}

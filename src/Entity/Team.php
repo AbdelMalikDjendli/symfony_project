@@ -33,7 +33,7 @@ class Team
     #[ORM\Column(length: 150)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'teams_event')]
+    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'teamsevent')]
     private Collection $match;
 
     #[ORM\ManyToOne(inversedBy: 'teams_user')]
