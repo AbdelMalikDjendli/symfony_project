@@ -38,8 +38,12 @@ class MatchCreatorType extends AbstractType
                         'Intermédiaire' => "intermediate",
                         'Confirmé' => "confirmed",
                         "Non renseigné" => 'non renseigné'
-                    ]])
-            ->add('teams_event',
+                    ],
+                    'label' => 'Niveau attendu',
+
+                    ]
+            )
+            ->add('teamsEvent',
                 EntityType::class, [
                     'mapped' => false,
                     'class' => Team::class,
@@ -49,29 +53,40 @@ class MatchCreatorType extends AbstractType
                             ->createQueryBuilder('request')
                             ->where('request.creator = :user')
                             ->setParameter('user', $user);
-                    }
+                    },
+                    'label' => 'Sélectionne une équipe'
 
                 ])
             ->add('date',
                 DateType::class, [
                     'required' => true,
-                    'input' => 'datetime_immutable']
+                    'input' => 'datetime_immutable',
+                'label' => 'Sélectionne un jour']
             )
             ->add('hour',
                 TimeType::class, [
                     'required' => true,
-                    'input' => 'string']
+                    'input' => 'string',
+                    'label' => 'Sélectionne une heure']
             )
             ->add('description',
                 TextareaType::class, [
-                    'required' => false]
+                    'required' => false,
+                    'label' => 'Autres informations importantes']
             )
             ->add('five', EntityType::class, [
                 'class' => Five::class,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'label' => 'Sélectionne un Five'
             ])
             ->add('submit',
-                SubmitType::class,
+                SubmitType::class, [
+                    'label' => 'CréeTonMatch',
+                        'attr' => [
+                            'class' => 'btn btn-success'
+                        ]
+
+                ]
             );
     }
 
@@ -79,6 +94,9 @@ class MatchCreatorType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
+            'attr' => [
+                'class' => 'font-weight-bold'
+            ]
         ])
 
         ;
