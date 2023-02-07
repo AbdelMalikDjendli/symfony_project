@@ -6,14 +6,21 @@
 
 {% block body %}
 
-<section class="container my-3 bg-light rounded">
-    <div class = 'row'>
-        <div class='col'>
+<section class="container my-3 p-4 bg-light rounded">
+    <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton match</h2>
 
-            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton match</h2>
+    {{ form_start(form) }}
+    <div class='col'>
 
-            {{ form_start(form) }}
+        <div class = 'row'>
 
+            <div class="my-3">
+                {{ form_row(form.date)}}
+            </div>
+
+            <div class="my-3">
+                {{ form_row(form.hour)}}
+            </div>
             <fieldset>
 
             <div class="my-3 form-check">
@@ -25,13 +32,9 @@
                 {{ form_row(form.teams_event)}}
             </div>
 
-            <div class="my-3">
-                {{ form_row(form.date)}}
-            </div>
 
-            <div class="my-3">
-                {{ form_row(form.hour)}}
-            </div>
+
+
 
             <div class="my-3 form-check form-check-inline">
                 {{ form_row(form.description)}}
