@@ -9,6 +9,7 @@ use App\Form\MatchCreatorType;
 use App\FormHandler\MatchFormHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +68,52 @@ class MatchController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
+
+    #[Route('/match/{eventid}/user/{userid}/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
+    #[Entity('event', options: ['id' => 'eventid'])]
+    #[Entity('user', options: ['id' => 'userid'])]
+    public function join(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Event $event, User $user): Response
+    {
+
+        $user = $userRepository->find($user);
+        $pseudo = $userRepository->findPseudoById($user);
+
+
+
+        # indique l'utilisateur qui crée le match
+        $event->setInvited($pseudo);
+
+
+        #
+        $joinform = $this->createForm(MatchCreatorType::class, $event);
+
+        # le formulaire saisit la requête
+        $joinform->handleRequest($request);
+
+        # lorsque la requête est envoyée et vérifiée
+        if ($joinform->isSubmitted() && $joinform->isValid()) {
+
+            echo "formulaire envoyé";
+
+            # récupération de l'objet team depuis le formulaire
+            $team = $joinform->get('teams_event')->getData();
+            $entityManager->persist($team);
+
+            # gestion des données reçues
+            $event->addTeam($team);
+            $this->entityManager->persist($event);
+            $this->entityManager->flush();
+
+            # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
+        }
+
+        # affichage de la vue du formulaire de création
+        return $this->render('joinmatch/joinmatch.html.twig', [
+            'joinform' => $joinform->createView(),
+        ]);
+    }
+
+
 
 
 
