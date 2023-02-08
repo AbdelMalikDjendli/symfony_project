@@ -5,8 +5,10 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Form\JoinMatchType;
 use App\Form\MatchCreatorType;
 use App\FormHandler\MatchFormHandler;
+use App\FormHandler\JoinMatchHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -85,7 +87,7 @@ class MatchController extends AbstractController
 
 
         #
-        $joinform = $this->createForm(MatchCreatorType::class, $event);
+        $joinform = $this->createForm(JoinMatchType::class, $event);
 
         # le formulaire saisit la requête
         $joinform->handleRequest($request);
