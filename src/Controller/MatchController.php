@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Form\JoinMatchType;
 use App\Form\MatchCreatorType;
 use App\FormHandler\MatchFormHandler;
-use App\FormHandler\JoinMatchHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
