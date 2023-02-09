@@ -22,13 +22,14 @@ class MatchController extends AbstractController
     {
     }
 
-    #[Route('/match/create', name: 'app_match_create', methods: ['GET', 'POST'])]
+    #[Route('user/match/create', name: 'app_match_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager, MatchFormHandler $matchFormHandler): Response
     {
         $userRepository = $entityManager -> getRepository(User::class);
 
         # appel de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
+
 
         # récupération de l'entité user
         $user = $userRepository -> findOneBy(["email" => $mail]);

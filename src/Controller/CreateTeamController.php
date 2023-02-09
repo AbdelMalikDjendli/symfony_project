@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\FormHandler\CreateTeamHandlerr;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,13 +14,7 @@ use App\Form\CreateTeamType;
 
 class CreateTeamController extends AbstractController
 {
-    #[Route('/create/team', name: 'app_create_team')]
-    public function index(): Response
-    {
-        return $this->render('create_team/index.html.twig', [
-            'controller_name' => 'CreateTeamController',
-        ]);
-    }
+
 
     #[Route('/user/{id}/createteam/', name: 'app_create_team', methods: ['GET', 'POST'])]
     public function create(Request $request, CreateTeamHandlerr $createTeamHandler, int $id): Response
@@ -35,7 +30,7 @@ class CreateTeamController extends AbstractController
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
         }
 
-        return $this->render('create_team/createteam.html.twig', [
+        return $this->render('team/createteam.html.twig', [
             'form' => $form->createView(),
         ]);
     }

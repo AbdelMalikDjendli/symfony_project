@@ -44,7 +44,8 @@ class EventRepository extends ServiceEntityRepository
 //    /**
 //     * @return Event[] Returns an array of Event objects
 //     */
-   public function findMatchCeatedOrJoinded($id,$pseudo): array
+
+   public function findMatchCreatedOrJoinded($id,$pseudo): array
    {
        return $this->createQueryBuilder('e')
            ->andWhere('e.invited = :pseudo')

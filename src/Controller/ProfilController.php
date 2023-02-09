@@ -13,13 +13,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil/{id}', name: 'app_profil')]
-    #[isGranted('ROLE_USER')]
+    #[Route('user/profil/{id}', name: 'app_profil')]
     public function index(UserRepository $userRepository, EventRepository $eventRepository, int $id): Response
     {
         $user = $userRepository->find($id);
 
-        $matches = $eventRepository->findMatchCeatedOrJoinded($id, $user->getPseudo());
+        $matches = $eventRepository->findMatchCreatedOrJoinded($id, $user->getPseudo());
         $matchJoinded = $eventRepository->findBy(
             ['invited'=>$user->getPseudo()]
         );
@@ -36,7 +35,9 @@ class ProfilController extends AbstractController
                 ['pseudo'=>$match->getInvited()]
             );
 
-            $invitedId[$match->getInvited()]=$invited[0]->getId();
+            if(count($invited)>0) {
+                $invitedId[$match->getInvited()] = $invited[0]->getId();
+            }
         }
 
 

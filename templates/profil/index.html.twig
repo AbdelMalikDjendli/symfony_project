@@ -3,7 +3,6 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-    {% if app.user %}
         <section class="container my-3">
             <div class="row text-center my-3 ">
                 <div class="coverPicture col-12 rounded">
@@ -54,9 +53,21 @@
                                 <td>{{ match.date|date('d/m/Y') }}</td>
                                 <td>{{ match.hour }}</td>
                                 <td>{{ match.five.name }}</td>
-                                <td>{{ match.teamsEvent[0].name }} VS {{ match.teamsEvent[1].name }}</td>
+                                <td>
+                                    {% if match.teamsEvent|length > 1 %}
+                                        {{ match.teamsEvent[0].name }} VS {{ match.teamsEvent[1].name }}
+                                    {% else %}
+                                        En attente d'un invité
+                                    {% endif %}
+                                </td>
                                 <td><a href="{{ path('app_profil', {id: match.organizer.id}) }}" class="link-success">{{ match.organizer.pseudo }}</a></td>
-                                <td><a href="{{ path('app_profil', {id: invited[match.invited]}) }}" class="link-success">{{ match.invited }}</a></td>
+                                <td>
+                                    {% if match.teamsEvent|length > 1 %}
+                                        <a href="{{ path('app_profil', {id: invited[match.invited]}) }}" class="link-success">{{ match.invited }}</a>
+                                    {% else %}
+                                        En attente d'un invité
+                                    {% endif %}
+                                </td>
                                     {% if match.winner is not null %}
                                         {% if app.user.pseudo ==  match.winner %}
                                             <th class="bg-success">
@@ -88,6 +99,7 @@
                 </div>
                 <div class="col-12 bg-light my-3 mx-1 rounded">
                     <h3 class="profilTitle my-3 bg-success rounded text-white">Mes équipes</h3>
+                    <a href="{{ path('app_create_team',{id:app.user.id})}}"><button>Créer une équipe</button></a>
                     <table class="table">
                         <thead>
                             <tr>
@@ -118,5 +130,4 @@
             </div>
         </section>
         {% endif %}
-    {% endif %}
 {% endblock %}
