@@ -4,4 +4,13 @@
 
 {% block body %}
 
+    {% for match in matches %}
+    <div>
+        {{ match.id }}
+        {{ match.organizer.pseudo }}
+        {{ match.five.name }}
+        {{ match.description }}
+    </div>
+    {% endfor %}
+
 {% endblock %}
