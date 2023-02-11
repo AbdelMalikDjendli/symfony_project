@@ -3,131 +3,138 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-        <section class="container my-3">
-            <div class="row text-center my-3 ">
-                <div class="coverPicture col-12 rounded">
-                    <img src="{{ asset('images/logovert.jpg') }}" width="150" height="150" alt="" class="rounded-circle my-3">
-                    <h2 class=" text-white">{{ pseudo }}</h2>
-                </div>
-            </div>
-        <div class="row text-center">
-            <div class="col-12 bg-light my-3 mx-1 rounded">
-                <h3 class="profilTitle my-3 bg-success rounded text-white">Statistiques</h3>
-                <table class="table">
-                    <thead>
-                    <th>Matchs</th>
-                    <th>Organisés </th>
-                    <th>Rejoins</th>
-                    <th>Victoires</th>
-                    <th>Défaites</th>
-                    </thead>
-                    <tbody>
-                    <td>{{ nbMatch }}</td>
-                    <td>{{ nbMatchCreated }}</td>
-                    <td>{{ nbMatchJoined }}</td>
-                    <td>{{ nbMatchWin }}</td>
-                    <td>{{ nbMatchLoose }}</td>
-                    </tbody>
-                </table>
-            </div>
+    <section class="container my-3">
+    <div class="row text-center my-3 ">
+        <div class="coverPicture col-12 rounded">
+            <img src="{{ asset('images/logovert.jpg') }}" width="150" height="150" alt="" class="rounded-circle my-3">
+            <h2 class=" text-white">{{ pseudo }}</h2>
+        </div>
+    </div>
+    <div class="row text-center">
+    <div class="col-12 bg-light my-3 mx-1 rounded">
+        <h3 class="profilTitle my-3 bg-success rounded text-white">Statistiques</h3>
+        <table class="table">
+            <thead>
+            <th>Matchs</th>
+            <th>Organisés</th>
+            <th>Rejoins</th>
+            <th>Victoires</th>
+            <th>Défaites</th>
+            </thead>
+            <tbody>
+            <td>{{ nbMatch }}</td>
+            <td>{{ nbMatchCreated }}</td>
+            <td>{{ nbMatchJoined }}</td>
+            <td>{{ nbMatchWin }}</td>
+            <td>{{ nbMatchLoose }}</td>
+            </tbody>
+        </table>
+    </div>
 
 
-            {% if app.user.id == id %}
-                <div class="col-12 bg-light my-3 mx-1 rounded">
-                    <h3 class="profilTitle my-3 bg-success rounded text-white">Mes matchs</h3>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>heure</th>
-                            <th>lieu</th>
-                            <th>Équipes</th>
-                            <th>Organisateur</th>
-                            <th>Invité</th>
-                            <th>Résultat</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for match in matches|slice(0,5)%}
-                            <tr>
-                                <td>{{ match.date|date('d/m/Y') }}</td>
-                                <td>{{ match.hour }}</td>
-                                <td>{{ match.five.name }}</td>
+    {% if app.user.id == id %}
+        <div class="col-12 bg-light my-3 mx-1 rounded">
+            <h3 class="profilTitle my-3 bg-success rounded text-white">Mes matchs</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>heure</th>
+                    <th>lieu</th>
+                    <th>Équipes</th>
+                    <th>Organisateur</th>
+                    <th>Invité</th>
+                    <th>Résultat</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for match in matches|slice(0,5) %}
+                    <tr>
+                        <td>{{ match.date|date('d/m/Y') }}</td>
+                        <td>{{ match.hour }}</td>
+                        <td>{{ match.five.name }}</td>
+                        <td>
+                            {% if match.teamsEvent|length > 1 %}
+                                {{ match.teamsEvent[0].name }} VS {{ match.teamsEvent[1].name }}
+                            {% else %}
+                                En attente d'un invité
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ path('app_profil', {id: match.organizer.id}) }}"
+                               class="link-success">{{ match.organizer.pseudo }}</a></td>
+                        <td>
+                            {% if match.teamsEvent|length > 1 %}
+                                <a href="{{ path('app_profil', {id: invited[match.invited]}) }}"
+                                   class="link-success">{{ match.invited }}</a>
+                            {% else %}
+                                En attente d'un invité
+                            {% endif %}
+                        </td>
+                        {% if match.winner is not null %}
+                            {% if app.user.pseudo ==  match.winner %}
+                                <th class=" text-success">
+                                    Victoire
+                                </th>
+                            {% else %}
+                                <th class="text-danger">
+                                    Défaite
+                                </th>
+                            {% endif %}
+                        {% else %}
+                            {% if app.user.id == match.organizer.id and app.user.id == id and match.teamsEvent|length > 1 %}
                                 <td>
-                                    {% if match.teamsEvent|length > 1 %}
-                                        {{ match.teamsEvent[0].name }} VS {{ match.teamsEvent[1].name }}
-                                    {% else %}
-                                        En attente d'un invité
-                                    {% endif %}
+                                    <a href="{{ path('app_match_result', {id: match.id}) }}">
+                                        <button class="btn btn-success">Ajouter un gagnant</button>
+                                    </a>
                                 </td>
-                                <td><a href="{{ path('app_profil', {id: match.organizer.id}) }}" class="link-success">{{ match.organizer.pseudo }}</a></td>
+                            {% else %}
                                 <td>
-                                    {% if match.teamsEvent|length > 1 %}
-                                        <a href="{{ path('app_profil', {id: invited[match.invited]}) }}" class="link-success">{{ match.invited }}</a>
-                                    {% else %}
-                                        En attente d'un invité
-                                    {% endif %}
+                                    En attente d'un résultat
                                 </td>
-                                    {% if match.winner is not null %}
-                                        {% if app.user.pseudo ==  match.winner %}
-                                            <th class="bg-success">
-                                                Victoire
-                                            </th>
-                                        {% else %}
-                                            <th class="bg-warning">
-                                                Défaite
-                                            </th>
-                                        {% endif %}
-                                    {% else %}
-                                        {% if app.user.id == match.organizer.id and app.user.id == id %}
-                                            <td>
-                                                <a href="#"><button class="btn btn-success">Ajouter un gagnant</button></a>
-                                            </td>
-                                        {% else %}
-                                            <td>
-                                                En attente d'un résultat
-                                            </td>
-                                        {% endif %}
-                                    {% endif %}
+                            {% endif %}
+                        {% endif %}
 
-                                <td></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <a href="#" class="link-success">Voir plus</a>
-                </div>
-                <div class="col-12 bg-light my-3 mx-1 rounded">
-                    <h3 class="profilTitle my-3 bg-success rounded text-white">Mes équipes</h3>
-                    <a href="{{ path('app_create_team',{id:app.user.id})}}"><button>Créer une équipe</button></a>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nom de l'équipe</th>
-                                <th>Joueur 1</th>
-                                <th>Joueur 2</th>
-                                <th>Joueur 3</th>
-                                <th>Joueur 4</th>
-                                <th>Joueur 5</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for team in  UserTeams|slice(0,5)%}
-                            <tr>
-                                <td>{{ team.name }}</td>
-                                <td>{{ team.player1 }}</td>
-                                <td>{{ team.player2 }}</td>
-                                <td>{{ team.player3 }}</td>
-                                <td>{{ team.player4 }}</td>
-                                <td>{{ team.player5 }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <a href="#" class="link-success">Voir plus</a>
-                </div>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" class="link-success">Voir plus</a>
+        </div>
+        <div class="col-12 bg-light my-3 mx-1 rounded">
+            <h3 class="profilTitle my-3 bg-success rounded text-white">Mes équipes</h3>
+            <img src = "{{ asset('images/plus-lg.svg') }}" alt="plus"/>
+            <a href="{{ path('app_create_team',{id:app.user.id}) }}" class="link-success">
+                Créer une équipe
+            </a>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom de l'équipe</th>
+                    <th>Joueur 1</th>
+                    <th>Joueur 2</th>
+                    <th>Joueur 3</th>
+                    <th>Joueur 4</th>
+                    <th>Joueur 5</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for team in  UserTeams|slice(0,5) %}
+                    <tr>
+                        <td>{{ team.name }}</td>
+                        <td>{{ team.player1 }}</td>
+                        <td>{{ team.player2 }}</td>
+                        <td>{{ team.player3 }}</td>
+                        <td>{{ team.player4 }}</td>
+                        <td>{{ team.player5 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" class="link-success">Voir plus</a>
+        </div>
 
-            </div>
+        </div>
         </section>
-        {% endif %}
+    {% endif %}
 {% endblock %}
