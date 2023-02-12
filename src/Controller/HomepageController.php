@@ -21,11 +21,13 @@ class HomepageController extends AbstractController
             $mail = $this->getUser()->getUserIdentifier();
             $userRepository = $entityManager -> getRepository(User::class);
             $user = $userRepository -> findOneBy(["email" => $mail]);
-            $allMatches = $eventRepository -> findUserJoinableMatches($user);
+            #$allMatches = $eventRepository -> findUserJoinableMatches($user);
+            $allMatches = $eventRepository -> findAll();
         }
-
-        # récupération de l'entité user
-        $allMatches = $eventRepository->findJoinableMatches();
+else {
+    #$allMatches = $eventRepository->findJoinableMatches();
+    $allMatches = $eventRepository->findAll();
+}
 
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
