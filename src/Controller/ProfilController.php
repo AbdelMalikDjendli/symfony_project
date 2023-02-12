@@ -40,6 +40,12 @@ class ProfilController extends AbstractController
             }
         }
 
+        #recuperation de la note
+        $note = NULL;
+        $nbNote = $user->getNbNote();
+        if($nbNote>0) {
+            $note = round($user->getNote() / $nbNote);
+        }
 
         return $this->render('profil/index.html.twig', [
             'UserTeams'=>$user->getTeams(),
@@ -51,7 +57,8 @@ class ProfilController extends AbstractController
             'nbMatchCreated'=> count($matchCreated),
             'nbMatchJoined'=> count($matchJoinded),
             'nbMatchWin'=>count($matchWin),
-            'nbMatchLoose'=>count($matchLoose)
+            'nbMatchLoose'=>count($matchLoose),
+            'note'=>$note
         ]);
     }
 }

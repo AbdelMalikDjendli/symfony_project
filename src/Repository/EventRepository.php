@@ -58,6 +58,7 @@ class EventRepository extends ServiceEntityRepository
            ;
    }
 
+
     public function findMatchWin($pseudo): array
     {
         return $this->createQueryBuilder('e')
