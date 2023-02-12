@@ -62,7 +62,6 @@ class Event
     }
 
 
-
     public function getId(): ?int
     {
         return $this->id;
@@ -79,9 +78,6 @@ class Event
 
         return $this;
     }
-
-
-
 
 
     public function getLevel(): ?string
@@ -204,7 +200,14 @@ class Event
         return $this;
     }
 
-
-
-
+    public function getMatchName(): ?string
+    {
+        $teamName = $this->teamsEvent->get(0)->getName();
+        $hourMatch = explode(":",$this->getHour())[0]."h";
+        $horaire = $this->getDate()->format('d/m')." à ".$hourMatch;
+        $fiveMatch = $teamName." le ".$horaire;
+        return $fiveMatch;
+    }
 }
+
+

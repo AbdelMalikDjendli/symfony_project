@@ -58,6 +58,27 @@ class EventRepository extends ServiceEntityRepository
            ;
    }
 
+   public function findUserJoinableMatches(User $user): array{
+       return $this->createQueryBuilder('m')
+           ->andWhere('m.invited = :noInvited')
+           ->orWhere('m.organizer != :user')
+           ->setParameter('user', $user)
+           ->setParameter('noInvited', null)
+           ->orderBy('m.date', 'DESC')
+           ->getQuery()
+           ->getResult();
+
+   }
+
+   public function findJoinableMatches(): array{
+       return $this->createQueryBuilder('m')
+           ->andWhere('m.invited = :noInvited')
+           ->setParameter('noInvited', null)
+           ->orderBy('m.date', 'DESC')
+           ->getQuery()
+           ->getResult();
+   }
+
     public function findMatchWin($pseudo): array
     {
         return $this->createQueryBuilder('e')

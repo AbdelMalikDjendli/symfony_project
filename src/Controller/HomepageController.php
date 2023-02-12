@@ -15,7 +15,18 @@ class HomepageController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $eventRepository = $entityManager -> getRepository(Event::class);
-        $allMatches = $eventRepository->findAll();
+
+        if($this->getUser() != null){
+            # appel de l'utilisateur connecté
+            $mail = $this->getUser()->getUserIdentifier();
+            $userRepository = $entityManager -> getRepository(User::class);
+            $user = $userRepository -> findOneBy(["email" => $mail]);
+            $allMatches = $eventRepository -> findUserJoinableMatches($user);
+        }
+
+        # récupération de l'entité user
+        $allMatches = $eventRepository->findJoinableMatches();
+
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
             'matches' => $allMatches
