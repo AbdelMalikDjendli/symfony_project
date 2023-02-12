@@ -9,14 +9,22 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class JoinMatchType extends AbstractType
-{
 
+{
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
-        $user = $options['data']->getOrganizer();
+        //$user = $options['data']->getOrganizer();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $builder
             ->add('teams_event',
@@ -24,6 +32,8 @@ class JoinMatchType extends AbstractType
                     'mapped' => false,
                     'class' => Team::class,
                     'choice_label' => 'name',
+                    'required' => 'true',
+                    'label' => 'Choisi ton équipe',
                     'query_builder' => function (TeamRepository $teamRepository) use ($user){
                         return $teamRepository
                             ->createQueryBuilder('request')

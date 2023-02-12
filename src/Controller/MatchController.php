@@ -70,13 +70,22 @@ class MatchController extends AbstractController
             ]);
         }
 
-    #[Route('/match/{eventid}/user/{userid}/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
+    #[Route('/match/{eventid}/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
     #[Entity('event', options: ['id' => 'eventid'])]
-    #[Entity('user', options: ['id' => 'userid'])]
-    public function join(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Event $event, User $user): Response
+    //#[Entity('user', options: ['id' => 'userid'])]
+    public function join(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Event $event): Response
     {
 
-        $user = $userRepository->find($user);
+        $userRepository = $entityManager -> getRepository(User::class);
+
+        # appel de l'utilisateur connecté
+        $mail = $this->getUser()->getUserIdentifier();
+
+        # récupération de l'entité user
+        $user = $userRepository -> findOneBy(["email" => $mail]);
+
+
+        //$user = $userRepository->find($user);
         $pseudo = $userRepository->findPseudoById($user);
 
 
