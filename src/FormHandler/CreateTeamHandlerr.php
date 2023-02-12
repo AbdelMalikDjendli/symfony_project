@@ -16,19 +16,18 @@ final class CreateTeamHandlerr
 
 
     public function __construct(
-        public EntityManagerInterface $entityManager,
-        public ManagerRegistry $doctrine
+        public EntityManagerInterface $entityManager
     )
     {
 
     }
 
     # Equipe pas encore créée par l'utilisateur
-    public function handleForm(Team $equipe, int $id): void
+    public function handleForm(Team $equipe, User $user): void
     {
 
 
-        $equipe->setCreator($this->doctrine->getRepository(User::class)->find($id));
+        $equipe->setCreator($user);
 
 
 

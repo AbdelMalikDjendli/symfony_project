@@ -59,11 +59,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Team::class)]
     private Collection $teams_user;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $note = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $nbNote = null;
+
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'users')]
+    private Collection $evaluator;
+
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'evaluator')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->parent = new ArrayCollection();
         $this->teams_user = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->note = 0;
+        $this->nbNote = 0;
+        $this->evaluator = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
 
@@ -276,6 +292,81 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($team->getCreator() === $this) {
                 $team->setCreator(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(?int $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getNbNote(): ?int
+    {
+        return $this->nbNote;
+    }
+
+    public function setNbNote(?int $nbNote): self
+    {
+        $this->nbNote = $nbNote;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getEvaluator(): Collection
+    {
+        return $this->evaluator;
+    }
+
+    public function addEvaluator(self $evaluator): self
+    {
+        if (!$this->evaluator->contains($evaluator)) {
+            $this->evaluator->add($evaluator);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluator(self $evaluator): self
+    {
+        $this->evaluator->removeElement($evaluator);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(self $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addEvaluator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(self $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeEvaluator($this);
         }
 
         return $this;
