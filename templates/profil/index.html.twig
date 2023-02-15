@@ -7,7 +7,11 @@
         <section class="container my-3">
             <div class="row text-center my-3 ">
                 <div class="coverPicture col-12 rounded">
-                    <img src="{{ asset('images/logovert.jpg') }}" width="150" height="150" alt="" class="rounded-circle my-3">
+                    {% if app.user.photoFilename %}
+                        <img src="{{ asset('/images/' ~ app.user.photoFilename) | imagine_filter('my_thumb') }}" alt="Photo de profil de {{ app.user.pseudo }}">
+                    {% else %}
+                        <img src="{{ asset('images/logovert.jpg') }}" alt="Photo de profil par défaut">
+                    {% endif %}
                     <h2 class=" text-white">{{ pseudo }}</h2>
                 </div>
             </div>
