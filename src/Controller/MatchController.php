@@ -77,9 +77,11 @@ class MatchController extends AbstractController
         $eventRepository = $entityManager -> getRepository(Event::class);
         $match = $eventRepository->find($id);
         #Vérifier qu'un resultat n'a pas deja été renseigné
+
         if($match->getWinner()!= NULL){
             return $this->redirectToRoute('app_homepage');
         }
+
 
         #Vérifier que le match a bien un invité
         if(count($match->getTeamsEvent())<=1){
@@ -126,7 +128,7 @@ class MatchController extends AbstractController
             # lorsque la requête est envoyée et vérifiée
         if ($form->isSubmitted() && $form->isValid()) {
 
-            echo "form envoyé";
+            $this->addFlash('result', 'Le resultat a bien été pris en compte !');
 
             # récupération du gagnant depuis le formulaire
             $winner = $form->get('winner')->getData();

@@ -22,15 +22,11 @@ class MatchResulType extends AbstractType
             ->add('winner',
                 ChoiceType::class, [
                     'choices'  => [
-                        'moi' => $organizer,
-                        'l\'adversaire' => $invited,
+                        'Moi' => $organizer,
+                        'L\'adversaire' => $invited,
                     ],
-
+                    'label'=> 'Qui est le gagnant ?'
                 ])
-
-            ->add('submit',
-                SubmitType::class,
-            );
 
         ;
     }
