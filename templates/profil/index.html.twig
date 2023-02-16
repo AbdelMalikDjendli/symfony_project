@@ -8,9 +8,9 @@
             <div class="row text-center my-3 ">
                 <div class="coverPicture col-12 rounded">
                     {% if app.user.photoFilename %}
-                        <img src="{{ asset('/images/' ~ app.user.photoFilename) | imagine_filter('my_thumb') }}" alt="Photo de profil de {{ app.user.pseudo }}">
+                        <img src="{{ asset('/images/' ~ app.user.photoFilename) | imagine_filter('my_thumb') }}" alt="Photo de profil de {{ app.user.pseudo }}" class="rounded-circle my-3">
                     {% else %}
-                        <img src="{{ asset('images/logovert.jpg') }}" alt="Photo de profil par défaut">
+                        <img src="{{ asset('images/logovert.jpg') }}" alt="Photo de profil par défaut" height="200" width="200" class="rounded-circle my-3">
                     {% endif %}
                     <h2 class=" text-white">{{ pseudo }}</h2>
                 </div>
