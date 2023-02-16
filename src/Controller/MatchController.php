@@ -70,11 +70,15 @@ class MatchController extends AbstractController
             ]);
         }
 
-    #[Route('/match/{eventid}/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
+    #[Route('/user/match/{eventid}/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
     #[Entity('event', options: ['id' => 'eventid'])]
     //#[Entity('user', options: ['id' => 'userid'])]
     public function join(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, Event $event): Response
     {
+        // on ne doit plus pouvoir rejoindre un match si il est complet
+        if($event->getInvited() != NULL){
+            return $this->redirectToRoute('app_homepage');
+        }
 
         $userRepository = $entityManager -> getRepository(User::class);
 
@@ -83,6 +87,11 @@ class MatchController extends AbstractController
 
         # récupération de l'entité user
         $user = $userRepository -> findOneBy(["email" => $mail]);
+
+        // un utilisateur ne doit pas pouvoir rejoindre un match dont il est organisateur
+        if ($event->getOrganizer()->getId() == $user->getId()){
+            return $this->redirectToRoute('app_homepage');
+        }
 
 
         //$user = $userRepository->find($user);

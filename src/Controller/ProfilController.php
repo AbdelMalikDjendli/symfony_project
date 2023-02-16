@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil/{id}', name: 'app_profil')]
+    #[Route('/user/profil/{id}', name: 'app_profil')]
     #[isGranted('ROLE_USER')]
     public function index(UserRepository $userRepository, EventRepository $eventRepository, int $id): Response
     {
