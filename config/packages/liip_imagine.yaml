@@ -1,0 +1,16 @@
+# config/packages/liip_imagine.yaml
+liip_imagine:
+    driver: "gd"
+    resolvers:
+        default:
+            web_path: ~
+    filter_sets:
+        my_thumb:
+            quality: 75
+            filters:
+                thumbnail:
+                    size: [200, 200]
+                    mode: outbound
+                    allow_upscale: true
+                    mask:
+                    type: circle
