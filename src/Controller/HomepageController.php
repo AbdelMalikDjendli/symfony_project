@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Repository\FiveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AbstractController
 {
     #[Route('/homepage', name: 'app_homepage')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, FiveRepository $fiveRepository): Response
     {
         $eventRepository = $entityManager -> getRepository(Event::class);
 
@@ -29,9 +30,17 @@ else {
     $allMatches = $eventRepository->findAll();
 }
 
+        $allFives = $fiveRepository -> findAll();
+
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
-            'matches' => $allMatches
+            'matches' => $allMatches,
+            'allFives' => $allFives
         ]);
+    }
+
+    #[Route('/homepage/{id}', name: 'app_filter')]
+    public function matchFilter(EntityManagerInterface $entityManager){
+
     }
 }

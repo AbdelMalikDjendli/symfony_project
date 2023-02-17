@@ -5,20 +5,32 @@
 {% block body %}
 
 
-        {% if app.user %}
-<div class="container mt-2 ">
-    <div class="row w-50 mx-auto rounded mb-3 bg-light justify-content-md-center border border-success"
-         style="border-width: 0.5px;">
 
+<div class="container mt-2 ">
+    <div class="row">
+    <div class="col-3 sticky-top">
+        <h1 class="h5">Ajouter un filtre</h1>
+        <form id="filter">
+            {% for five in allFives %}
+                <p><input type="checkbox" name="five[]" id="five{{ five.id }}" value="{{ five.id }}">
+                    <label for="five{{ five.id }}">{{ five.name }}</label></p>
+            {% endfor %}
+        </form>
+    </div>
+    <div class="col-6">
+        {% if app.user %}
+            <div class="row w-100 mx-auto rounded mt-2 mb-3 bg-light justify-content-md-center border border-success"
+                 style="border-width: 0.5px;">
         <button  type="button" class="btn btn-success">Crée ton propre match
             </button>
-    </div>
+            </div>
+
     {% else %}
-    <div class="container column mt-3 ">
+
         {% endif %}
 
         {% for match in matches %}
-            <div class="row w-50 mx-auto rounded mb-3 bg-light justify-content-md-center border border-success"
+            <div class="row w-100 mx-auto rounded mb-3 bg-light justify-content-md-center border border-success"
                  style="border-width: 0.5px;">
 
                 <h1 class="h4 bg-success text-white bg-gradient p-2"> {{ match.getMatchName() }}</h1>
@@ -27,7 +39,6 @@
                 </p>
                 <p>Five : {{ match.five.name }}</p>
                 <p>Niveau : {{ match.level }}</p>
-                <p>{{ match.description }}</p>
                 {% if app.user %}
                     <div class="d-flex flex-row-reverse">
                         <button type="button" class="w-25 rounded mb-2  btn btn-success">Rejoindre</button>
@@ -38,6 +49,10 @@
             </div>
         {% endfor %}
 
+    </div>
+<div class="col-3">
+
+</div>
     </div>
     </div>
 
