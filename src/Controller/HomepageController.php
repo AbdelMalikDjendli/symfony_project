@@ -22,6 +22,9 @@ class HomepageController extends AbstractController
         //récupère depuis l'url le filtrage des five (méthode GET)
         $fiveFilter = $request -> get("fives");
 
+        //récupère depuis l'url le filtrage du niveau (méthode GET)
+        $levelFilter = $request -> get("levels");
+
         //si l'utilisateur est connecté
         if($this->getUser() != null){
 
@@ -31,13 +34,12 @@ class HomepageController extends AbstractController
             $user = $userRepository -> findOneBy(["email" => $mail]);
 
             // les matchs qu'il peut rejoindre lui sont affichés avec les filtres
-            $allMatches = $eventRepository -> findUserJoinableMatches($user, $fiveFilter);
+            $allMatches = $eventRepository -> findUserJoinableMatches($user, $fiveFilter, $levelFilter);
         }
         else {
             //tous les matchs joignables
-            $allMatches = $eventRepository->findJoinableMatches($fiveFilter);
+            $allMatches = $eventRepository->findJoinableMatches($fiveFilter, $levelFilter);
         }
-
 
         //interception de la requête ajax qui compte les informations du filtrage
         if($request -> get('ajax') == 1){

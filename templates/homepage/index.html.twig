@@ -8,14 +8,32 @@
 
 <div class="container mt-2 ">
     <div class="row">
-    <div class="col-3 sticky-top">
-        <h1 class="h5">Ajouter un filtre</h1>
+    <div class="col-3">
+
+        <div class="mt-3">
+
+        <h1 class="h4">Ajouter un filtre</h1>
+
         <form id="filter">
+
+            <h1 class="h5 pt-2">Five</h1>
+
             {% for five in allFives %}
                 <p><input type="checkbox" name="fives[]" id="five{{ five.id }}" value="{{ five.id }}">
                     <label for="five{{ five.id }}">{{ five.name }}</label></p>
             {% endfor %}
+
+            <h1 class="h5 pt-2">Niveau de jeu</h1>
+
+            <p><input type="checkbox" name="levels[]" id="beginner" value="beginner">
+                <label for="beginner">Débutant</label></p>
+            <p><input type="checkbox" name="levels[]" id="intermediate" value="intermediate">
+                <label for="intermediate">Intermédiaire</label></p>
+            <p><input type="checkbox" name="levels[]" id="confirmed" value="confirmed">
+                <label for="confirmed">Confirmé</label></p>
         </form>
+
+        </div>
     </div>
     <div class="col-6">
         {% if app.user %}

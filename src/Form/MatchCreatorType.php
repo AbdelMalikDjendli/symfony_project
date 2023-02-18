@@ -34,7 +34,7 @@ class MatchCreatorType extends AbstractType
                 ChoiceType::class, [
                     'expanded' => 'true',
                     'choices' => [
-                        'Débutant' => "begginer",
+                        'Débutant' => "beginner",
                         'Intermédiaire' => "intermediate",
                         'Confirmé' => "confirmed",
                         "Non renseigné" => 'non renseigné'

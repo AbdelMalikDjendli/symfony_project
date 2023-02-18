@@ -51,8 +51,6 @@ class MatchController extends AbstractController
             # lorsque la requête est envoyée et vérifiée
             if ($form->isSubmitted() && $form->isValid()) {
 
-                echo "form envoyé";
-
                 # récupération de l'objet team depuis le formulaire
                 $team = $form->get('teams_event')->getData();
                 $entityManager->persist($team);

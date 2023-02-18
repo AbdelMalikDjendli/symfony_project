@@ -14,7 +14,7 @@
         <p>Niveau : {{ match.level }}</p>
         {% if app.user %}
             <div class="d-flex flex-row-reverse">
-                <button type="button" class="w-25 rounded mb-2  btn btn-success">Rejoindre</button>
+                <a type="button" class="w-25 rounded mb-2  btn btn-success" href="{{ path('app_profil', { 'id' : match.organizer.id}) }}">Rejoindre</a>
             </div>
         {% endif %}
 
