@@ -58,20 +58,35 @@ class EventRepository extends ServiceEntityRepository
            ;
    }
 
-   public function findUserJoinableMatches(User $user): array{
-       return $this->createQueryBuilder('m')
-           ->andWhere('m.invited = :noInvited')
-           ->orWhere('m.organizer != :user')
+   public function findUserJoinableMatches(User $user, $fiveFilter = null): array{
+       $query = $this->createQueryBuilder('m');
+
+        if($fiveFilter != null){
+            //les fives font ils partis des fives choisis par l'utilisateurs
+            $query->andWhere('m.five IN(:fives)')
+                ->setParameter(':fives', array_values($fiveFilter));
+        }
+
+       return $query
+           ->andWhere('m.invited IS NULL')
+           ->andWhere('m.organizer != :user')
            ->setParameter('user', $user)
-           ->setParameter('noInvited', null)
-           ->orderBy('m.date', 'DESC')
+           ->orderBy('m.date', 'ASC')
            ->getQuery()
            ->getResult();
 
    }
 
-   public function findJoinableMatches(): array{
-       return $this->createQueryBuilder('m')
+   public function findJoinableMatches($fiveFilter): array{
+        $query = $this -> createQueryBuilder('m');
+
+       if($fiveFilter != null){
+           //les fives font ils partis des fives choisis par l'utilisateurs
+           $query->andWhere('m.five IN(:fives)')
+               ->setParameter(':fives', array_values($fiveFilter));
+       }
+
+       return $query
            ->andWhere('m.invited = :noInvited')
            ->setParameter('noInvited', null)
            ->orderBy('m.date', 'DESC')
