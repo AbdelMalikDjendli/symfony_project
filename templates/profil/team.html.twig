@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+<section class="container my-3">
+    <div class="row text-center my-3 ">
+<div class="col-12 bg-light my-3 mx-1 rounded">
+    <h3 class="profilTitle my-3 bg-success rounded text-white">Mes équipes</h3>
+    <a href="{{ path('app_create_team',{id:app.user.id}) }}" class="link-success">
+        <button class="btn btn-success my-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFFFFF" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+            Ajouter une équipe
+        </button>
+    </a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom de l'équipe</th>
+            <th>Joueur 1</th>
+            <th>Joueur 2</th>
+            <th>Joueur 3</th>
+            <th>Joueur 4</th>
+            <th>Joueur 5</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for team in  UserTeams %}
+            <tr>
+                <td>{{ team.name }}</td>
+                <td>{{ team.player1 }}</td>
+                <td>{{ team.player2 }}</td>
+                <td>{{ team.player3 }}</td>
+                <td>{{ team.player4 }}</td>
+                <td>{{ team.player5 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+</section>
+    <div class="d-flex justify-content-center my-3">
+        <nav aria-label="Page navigation ">
+            <ul class="pagination">
+                <li class="page-item">
+                    {% if currentPage != 1 %}
+                        <a class="page-link" href="{{path('app_team_read', {'page':currentPage-1 }) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    {% endif %}
+                </li>
+                {% for i in 1..nbPage %}
+                    <li class="page-item"><a class="page-link" href="{{path('app_team_read', {'page':loop.index }) }}">{{ loop.index }}</a></li>
+                {% endfor %}
+                <li class="page-item">
+                    {% if currentPage != nbPage %}
+                        <a class="page-link" href="{{path('app_team_read', {'page':currentPage+1 }) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}

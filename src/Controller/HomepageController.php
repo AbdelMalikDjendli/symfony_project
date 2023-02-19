@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomepageController extends AbstractController
 {
-    #[Route('/homepage', name: 'app_homepage')]
+    #[Route('/homepage/', name: 'app_homepage')]
     public function index(EntityManagerInterface $entityManager, FiveRepository $fiveRepository, Request $request): Response
     {
         $eventRepository = $entityManager -> getRepository(Event::class);
@@ -27,7 +27,6 @@ class HomepageController extends AbstractController
 
         //si l'utilisateur est connecté
         if($this->getUser() != null){
-
             # appel de l'utilisateur connecté
             $mail = $this->getUser()->getUserIdentifier();
             $userRepository = $entityManager -> getRepository(User::class);
@@ -48,7 +47,7 @@ class HomepageController extends AbstractController
                 // renderView retourne le HTML des nouvelles annonces de match
                 'content' => $this->renderView('homepage/announces/matches.html.twig', [
                         'controller_name' => 'HomepageController',
-                        'matches' => $allMatches
+                        'matches' => $allMatches,
                     ])
             ]);
         }
@@ -60,10 +59,5 @@ class HomepageController extends AbstractController
             'matches' => $allMatches,
             'allFives' => $allFives
         ]);
-    }
-
-    #[Route('/homepage/{id}', name: 'app_filter')]
-    public function matchFilter(EntityManagerInterface $entityManager){
-
     }
 }

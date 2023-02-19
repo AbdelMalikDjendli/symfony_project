@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <section class="container my-3">
+    <section class="row text-center my-3 ">
+<div class="col-12 bg-light my-3 mx-1 rounded">
+    <h3 class="profilTitle my-3 bg-success rounded text-white">Mes matchs</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>heure</th>
+            <th>lieu</th>
+            <th>Équipes</th>
+            <th>Organisateur</th>
+            <th>Invité</th>
+            <th>Résultat</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for match in matches %}
+            <tr>
+                <td>{{ match.date|date('d/m/Y') }}</td>
+                <td>{{ match.hour }}</td>
+                <td>{{ match.five.name }}</td>
+                <td>
+                    {% if match.teamsEvent|length > 1 %}
+                        {{ match.teamsEvent[0].name }} VS {{ match.teamsEvent[1].name }}
+                    {% else %}
+                        En attente d'un invité
+                    {% endif %}
+                </td>
+                <td><a href="{{ path('app_profil', {id: match.organizer.id}) }}"
+                       class="link-success">{{ match.organizer.pseudo }}</a></td>
+                <td>
+                    {% if match.teamsEvent|length > 1 %}
+                        <a href="{{ path('app_profil', {id: invited[match.invited]}) }}"
+                           class="link-success">{{ match.invited }}</a>
+                    {% else %}
+                        En attente d'un invité
+                    {% endif %}
+                </td>
+                {% if match.winner is not null %}
+                    {% if app.user.pseudo ==  match.winner %}
+                        <th class=" text-success">
+                            Victoire
+                        </th>
+                    {% else %}
+                        <th class="text-danger">
+                            Défaite
+                        </th>
+                    {% endif %}
+                {% else %}
+                    {% if app.user.id == match.organizer.id and match.teamsEvent|length > 1 %}
+                        <td>
+                            <a href="{{ path('app_match_result', {id: match.id}) }}">
+                                <button class="btn btn-success">Ajouter un gagnant</button>
+                            </a>
+                        </td>
+                    {% else %}
+                        <td>
+                            En attente d'un résultat
+                        </td>
+                    {% endif %}
+                {% endif %}
+
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    </section>
+    </section>
+
+    <div class="d-flex justify-content-center my-3">
+        <nav aria-label="Page navigation ">
+            <ul class="pagination">
+                <li class="page-item">
+                    {% if currentPage != 1 %}
+                        <a class="page-link" href="{{path('app_match_read', {'page':currentPage-1 }) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    {% endif %}
+                </li>
+                {% for i in 1..nbPage %}
+                    <li class="page-item"><a class="page-link" href="{{path('app_match_read', {'page':loop.index }) }}">{{ loop.index }}</a></li>
+                {% endfor %}
+                <li class="page-item">
+                    {% if currentPage != nbPage %}
+                        <a class="page-link" href="{{path('app_match_read', {'page':currentPage+1 }) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    {% endblock %}

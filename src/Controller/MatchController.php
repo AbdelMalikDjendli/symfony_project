@@ -9,6 +9,7 @@ use App\Form\JoinMatchType;
 use App\Form\MatchCreatorType;
 use App\Form\MatchResulType;
 use App\FormHandler\MatchFormHandler;
+use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -211,6 +212,47 @@ class MatchController extends AbstractController
         # affichage de la vue du formulaire de création
         return $this->render('joinmatch/joinmatch.html.twig', [
             'joinform' => $joinform->createView(),
+        ]);
+    }
+
+    #[Route('user/match/voir/{page}', name: 'app_match_read')]
+    public function read(UserRepository $userRepository, EventRepository $eventRepository, int $page): Response
+    {
+        # appel de l'utilisateur connecté
+        $mail = $this->getUser()->getUserIdentifier();
+
+        # récupération de l'entité user
+        $user = $userRepository -> findOneBy(["email" => $mail]);
+
+        $matches = $eventRepository->findMatchCreatedOrJoinded($user->getId(), $user->getPseudo());
+
+        $invitedId = array();
+        foreach($matches as $match){
+            $invited = $userRepository->findby(
+                ['pseudo'=>$match->getInvited()]
+            );
+
+            if(count($invited)>0) {
+                $invitedId[$match->getInvited()] = $invited[0]->getId();
+            }
+        }
+
+        # pagination
+        if($page<0){
+            $page = 1;
+        }
+
+        $limit = 10;
+        $debut = ($page*$limit) - $limit;
+        $pagination = array_slice($matches,$debut, $limit);
+
+        $nbPage =  ceil(count($matches)/$limit);
+
+        return $this->render('profil/mesMatch.html.twig', [
+            'matches' =>$pagination,
+            'invited'=>$invitedId,
+            'nbPage'=>$nbPage,
+            'currentPage'=>$page
         ]);
     }
 

@@ -24,7 +24,9 @@
                             </svg>
                         {% endif %}
                     {% endfor %}
+                <small class="text-muted mx-2">{{ nbNote }} note(s)</small>
             </div>
+
             {% if app.user.id != id %}
             <a href = "{{ path('app_rating',{id : id}) }}">
                 <button class="btn btn-success text-wite my-2">
@@ -127,7 +129,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <a href="#" class="link-success">Voir plus</a>
+            <a href="{{path('app_match_read',{'page':1})}}" class="link-success">Voir plus</a>
         </div>
         <div class="col-12 bg-light my-3 mx-1 rounded">
             <h3 class="profilTitle my-3 bg-success rounded text-white">Mes équipes</h3>
@@ -164,7 +166,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <a href="#" class="link-success">Voir plus</a>
+            <a href='{{path('app_team_read',{'page':1})}}' class="link-success">Voir plus</a>
         </div>
 
         </div>

@@ -25,11 +25,9 @@ class RatingType extends AbstractType
                         '4' => 4,
                         '5' => 5
                     ],
-
+                    'label'=>'Notez votre adversaire sur 5'
                 ])
-            ->add('submit',
-                SubmitType::class,
-            );
+
 
         ;
     }
