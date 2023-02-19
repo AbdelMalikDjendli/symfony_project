@@ -28,11 +28,12 @@
         {% block body %}
 
         {% endblock %}
+        {%  block footer %}
+            {% include "fragments/footer.html.twig" %}
+        {% endblock %}
     </body>
 
-    {%  block footer %}
-        {% include "fragments/footer.html.twig" %}
-    {% endblock %}
 
-    </footer>
+
+
 </html>

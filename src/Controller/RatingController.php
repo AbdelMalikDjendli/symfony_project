@@ -49,11 +49,12 @@ class RatingController extends AbstractController
             return $this->redirectToRoute('app_homepage');
         }
 
+        /*
         #peut donner une seul note a un meme utilisateur
-
         if($evaluatedUser->getEvaluator()->contains($user)){
             return $this->redirectToRoute('app_homepage');
         }
+        */
 
         #ne peux pas s'evaluer tout seul
         if($id == $user->getId()){
@@ -72,7 +73,7 @@ class RatingController extends AbstractController
         # lorsque la requête est envoyée et vérifiée
         if ($form->isSubmitted() && $form->isValid()) {
 
-            echo "form envoyé";
+            $this->addFlash('note', 'Votre note a bien été pris en compte !');
 
             # récupération de la note depuis le formulaire
             $note = $form->get('note')->getData();

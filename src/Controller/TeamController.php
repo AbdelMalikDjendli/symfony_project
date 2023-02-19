@@ -13,7 +13,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Form\CreateTeamType;
 
-class CreateTeamController extends AbstractController
+class TeamController extends AbstractController
 {
 
 
@@ -43,5 +43,36 @@ class CreateTeamController extends AbstractController
         return $this->render('team/createteam.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/user/team/voir/{page}', name: 'app_team_read')]
+    public function read(UserRepository $userRepository, int $page): Response
+    {
+        # appel de l'utilisateur connecté
+        $mail = $this->getUser()->getUserIdentifier();
+
+        # récupération de l'entité user
+        $user = $userRepository -> findOneBy(["email" => $mail]);
+
+        $teams = $user->getTeams();
+
+        # pagination
+        if($page<0){
+            $page = 1;
+        }
+
+        $limit = 10;
+        $debut = ($page*$limit) - $limit;
+        $pagination = array_slice($teams->toArray(),$debut, $limit);
+
+        $nbPage =  ceil(count($teams)/$limit);
+
+
+        return $this->render('profil/team.html.twig', [
+            'UserTeams'=> $pagination,
+            'nbPage'=>$nbPage,
+            'currentPage'=>$page
+        ]);
+
     }
 }

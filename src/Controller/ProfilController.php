@@ -59,7 +59,8 @@ class ProfilController extends AbstractController
             'nbMatchWin'=>count($matchWin),
             'nbMatchLoose'=>count($matchLoose),
             'note'=>$note,
-            'picture'=> $user->getPhotoFilename()
+            'picture'=> $user->getPhotoFilename(),
+            'nbNote'=>$user->getNbNote()
         ]);
     }
 }
