@@ -5,41 +5,60 @@
 {% block body %}
 
 
-        {% if app.user %}
+
 <div class="container mt-2 ">
-    <div class="row w-50 mx-auto rounded mb-3 bg-light justify-content-md-center border border-success"
-         style="border-width: 0.5px;">
+    <div class="row">
+    <div class="col-3">
 
-        <button  type="button" class="btn btn-success">Crée ton propre match
-            </button>
+        <div class="mt-3">
+
+        <h1 class="h4">Ajouter un filtre</h1>
+
+        <form id="filter">
+
+            <h1 class="h5 pt-2">Five</h1>
+
+            {% for five in allFives %}
+                <p><input type="checkbox" name="fives[]" id="five{{ five.id }}" value="{{ five.id }}">
+                    <label for="five{{ five.id }}">{{ five.name }}</label></p>
+            {% endfor %}
+
+            <h1 class="h5 pt-2">Niveau de jeu</h1>
+
+            <p><input type="checkbox" name="levels[]" id="beginner" value="beginner">
+                <label for="beginner">Débutant</label></p>
+            <p><input type="checkbox" name="levels[]" id="intermediate" value="intermediate">
+                <label for="intermediate">Intermédiaire</label></p>
+            <p><input type="checkbox" name="levels[]" id="confirmed" value="confirmed">
+                <label for="confirmed">Confirmé</label></p>
+        </form>
+
+        </div>
     </div>
-    {% else %}
-    <div class="container column mt-3 ">
-        {% endif %}
-
-        {% for match in matches %}
-            <div class="row w-50 mx-auto rounded mb-3 bg-light justify-content-md-center border border-success"
-                 style="border-width: 0.5px;">
-
-                <h1 class="h4 bg-success text-white bg-gradient p-2"> {{ match.getMatchName() }}</h1>
-                <p>Organisateur : <a
-                            href="{{ path('app_profil', { 'id' : match.organizer.id}) }}">{{ match.organizer.pseudo }}</a>
-                </p>
-                <p>Five : {{ match.five.name }}</p>
-                <p>Niveau : {{ match.level }}</p>
-                <p>{{ match.description }}</p>
-                {% if app.user %}
-                    <div class="d-flex flex-row-reverse">
-                        <button type="button" class="w-25 rounded mb-2  btn btn-success">Rejoindre</button>
-                    </div>
-                {% endif %}
-
-
+    <div class="col-6">
+        {% if app.user %}
+            <div class="row w-75 mx-auto rounded mh-10 mt-2 mb-3 bg-light justify-content-md-center"
+                 style="border-width: 0.5px; height: 60px">
+        <a class="btn btn-success" href="{{ path('app_match_create') }}">Crée ton propre match
+            </a>
             </div>
-        {% endfor %}
 
+    {% else %}
+
+        {% endif %}
+        <div id="content">
+
+            {% include asset('homepage/announces/matches.html.twig') %}
+        </div>
+    </div>
+<div class="col-3">
+
+</div>
     </div>
     </div>
+    {% block javascripts %}
+       <script src="{{ asset('js/filters.js') }}"
+    {% endblock %}
 
     {% endblock %}
 
