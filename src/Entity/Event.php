@@ -208,6 +208,18 @@ class Event
         $fiveMatch = $teamName." le ".$horaire;
         return $fiveMatch;
     }
+
+    public function getLabelForLevel(): ?string
+    {
+        $level = $this -> getLevel();
+        return match ($level) {
+            "beginner" => "Débutant",
+            "intermediate" => "Intermédiaire",
+            "confirmed" => "Confirmé",
+            "blank" => "Non renseigné",
+            default => "Non renseigné",
+        };
+    }
 }
 
 
