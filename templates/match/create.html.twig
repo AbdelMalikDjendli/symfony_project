@@ -1,55 +1,69 @@
 {% extends 'base.html.twig' %}
 
-
+{% block head %}
+    <style>
+        input[type=radio] {
+            accent-color: forestgreen;
+        }
+    </style>
+{% endblock %}
 
 {% block title %}Crée un match{% endblock %}
 
 {% block body %}
 
-<section class="container my-3 bg-light rounded">
-    <div class = 'row'>
-        <div class='col'>
+    <section class="container my-3 p-4 bg-light rounded">
+        <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton match</h2>
 
-            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Crée ton match</h2>
+        {{ form_start(form) }}
 
-            {{ form_start(form) }}
 
-            <fieldset>
 
-            <div class="my-3 form-check">
-                {{ form_row(form.level)}}
-            </div>
-            </fieldset>
+        <div class='row' >
+            <div class='col mx-auto'>
 
-            <div class="my-3 selectpicker">
-                {{ form_row(form.teams_event)}}
-            </div>
 
-            <div class="my-3">
-                {{ form_row(form.date)}}
-            </div>
 
-            <div class="my-3">
-                {{ form_row(form.hour)}}
-            </div>
+                <div class="my-3 w-50 mx-auto">
+                    {{ form_row(form.date)}}
+                </div>
 
-            <div class="my-3 form-check form-check-inline">
-                {{ form_row(form.description)}}
-            </div>
+                <div class="my-3 w-50 mx-auto">
+                    {{ form_row(form.hour)}}
+                </div>
 
-            <div class="my-3 selectpicker">
-                {{ form_row(form.five)}}
+
+                <div class="my-3 w-50 mx-auto">
+                    {{ form_row(form.five)}}
+                </div>
+
+
+                <div class="my-3 w-50 mx-auto">
+                    {{ form_row(form.description)}}
+                </div>
+
+
             </div>
 
-            <div class="my-3 form-check form-check-inline">
-                {{ form_row(form.submit)}}
-            </div>
+            <div class='col'>
 
+
+                <div class="my-3 w-50 mx-auto form-check">
+                    {{ form_row(form.level)}}
+                </div>
+
+
+                <div class="my-3 w-50 mx-auto selectpicker">
+                    {{ form_row(form.teamsEvent)}}
+                </div>
+
+            </div>
         </div>
+        <div class="my-3 pt-3 d-flex justify-content-center">
+            {{ form_row(form.submit)}}
+        </div>
+    </section>
 
-    </div>
-</section>
 
-
-{{ form_end(form) }}
+    {{ form_end(form) }}
 {% endblock %}
