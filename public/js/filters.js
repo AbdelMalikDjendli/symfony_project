@@ -15,8 +15,10 @@ window.onload = () => {
 
             //création de l'URL contenant les données du filtrage
             const Params = new URLSearchParams();
+            http://snowaddict-symfony.local/homepage/?fives%5B%5D=1&fives%5B%5D=2&levels%5B%5D=intermediate&ajax=1
 
-            Form.forEach((value,key) => {
+
+                Form.forEach((value,key) => {
 
                 //ajoute les informations sélectionnés au fur et à mesure dans l'objet URL
                 Params.append(key, value);

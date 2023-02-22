@@ -21,6 +21,11 @@
                 {{ form_row(joinform.teams_event)}}
             </div>
 
+                {% if app.user.getTeams() is empty %}
+                <div class="alert alert-danger" role="alert">
+                <p>Veuillez créer une équipe dans votre profil.</p>
+                {% endif %}
+                </div>
             </fieldset>
 
 

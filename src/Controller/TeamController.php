@@ -35,8 +35,9 @@ class TeamController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            echo "form envoyé";
             $createTeamHandler->handleForm($equipe, $user);
+
+            return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
         }
 

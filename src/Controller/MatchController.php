@@ -62,6 +62,9 @@ class MatchController extends AbstractController
                 $this->entityManager->persist($match);
                 $this->entityManager->flush();
 
+                $this->addFlash('success', 'Votre match a bien été créé.');
+
+                return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
                 # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
             }
 
@@ -143,7 +146,8 @@ class MatchController extends AbstractController
             $this->entityManager->persist($match);
             $this->entityManager->flush();
 
-                # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
+
+            # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
             }
 
             # affichage de la vue du formulaire de création
@@ -195,8 +199,6 @@ class MatchController extends AbstractController
         # lorsque la requête est envoyée et vérifiée
         if ($joinform->isSubmitted() && $joinform->isValid()) {
 
-            echo "formulaire envoyé";
-
             # récupération de l'objet team depuis le formulaire
             $team = $joinform->get('teams_event')->getData();
             $entityManager->persist($team);
@@ -206,6 +208,9 @@ class MatchController extends AbstractController
             $this->entityManager->persist($event);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Vous avez rejoint le match avec succès.');
+
+            return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
         }
 

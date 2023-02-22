@@ -90,6 +90,10 @@ class RatingController extends AbstractController
             $this->entityManager->persist($evaluatedUser);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Votre note a bien été prise en compte.');
+
+            return $this->redirectToRoute('app_profil', ['id' => $evaluatedUser->getId()]);
+
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
         }
 
