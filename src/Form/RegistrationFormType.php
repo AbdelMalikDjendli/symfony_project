@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
 
             $builder
                 ->add('photo', FileType::class, [
-                'label' => 'Photo de profil',
+
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [

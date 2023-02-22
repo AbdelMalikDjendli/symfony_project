@@ -17,6 +17,12 @@
                    <img src="{{ asset("images/person.svg") }}" alt="person" width="22" height="22">
                    Mon identité
                </legend>
+               <div class="form-control-file">
+                      {{ form_row(registrationForm.photo, {
+                          label: 'Photo de profil'
+
+                   }) }}
+               </div>
                <div class="my-3">{{ form_row(registrationForm.lastName, {
                        label: 'Nom'
                    }) }}
