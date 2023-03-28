@@ -34,6 +34,7 @@ window.onload = () => {
             // ajax=1 pour transmettre l'information au controleur que la requête a bien eu lieu
             fetch(Url.pathname + "?" + Params.toString() + "&ajax=1", {
                 headers: {
+                    'Content-Type': 'application/json',
                     //méthodologie ajax classique
                     "x-Requested-With": "XMLHttpRequest"
                 }
@@ -41,6 +42,7 @@ window.onload = () => {
                 response => response.json()
             ).then(
                 data => { //data récupère ce qui a été traité par le json
+                    console.log(data);
                     //zone de contenu affichée dans le template (avant la boucle for de l'affichage des matchs)
                     const content = document.querySelector("#content");
 

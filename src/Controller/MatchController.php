@@ -130,7 +130,6 @@ class MatchController extends AbstractController
             # lorsque la requête est envoyée et vérifiée
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash('result', 'Le resultat a bien été pris en compte !');
 
             # récupération du gagnant depuis le formulaire
             $winner = $form->get('winner')->getData();
@@ -145,6 +144,11 @@ class MatchController extends AbstractController
 
             $this->entityManager->persist($match);
             $this->entityManager->flush();
+
+
+            $this->addFlash('success', 'Le résultat a bien été pris en compte.');
+
+            return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
 
 
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match

@@ -99,4 +99,10 @@
         </nav>
     </div>
 
+    <div style="text-align: right; margin-right: 10%;">
+    <a href="{{ path('app_profil', {id: app.user.getId()}) }}">
+        <button class="btn btn-success">Retourner sur le profil</button>
+    </a>
+    </div>
+
     {% endblock %}

@@ -73,8 +73,6 @@ class RatingController extends AbstractController
         # lorsque la requête est envoyée et vérifiée
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash('note', 'Votre note a bien été pris en compte !');
-
             # récupération de la note depuis le formulaire
             $note = $form->get('note')->getData();
 

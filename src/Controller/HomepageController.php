@@ -42,12 +42,14 @@ class HomepageController extends AbstractController
 
         //interception de la requête ajax qui compte les informations du filtrage
         if($request -> get('ajax') == 1){
+
+            //placer dans un nouveau controller avec five etc
             return new JsonResponse([
 
                 // renderView retourne le HTML des nouvelles annonces de match
                 'content' => $this->renderView('homepage/announces/matches.html.twig', [
                         'controller_name' => 'HomepageController',
-                        'matches' => $allMatches,
+                        'matches' => $allMatches
                     ])
             ]);
         }
