@@ -46,6 +46,9 @@ window.onload = () => {
 
                     //contenu modifié avec les infos issus de data
                     content.innerHTML = data.content;
+
+                    // met a jour l'url de la page après un filtrage
+                    history.pushState({}, null, Url.pathname + "?" + Params.toString())
                 }
 
 
