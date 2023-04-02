@@ -57,7 +57,6 @@ class HomepageController extends AbstractController
 
         //interception de la requête ajax qui compte les informations du filtrage
         if($request -> get('ajax') == 1){
-
             return new JsonResponse([
 
                 // renderView retourne le HTML des nouvelles annonces de match
