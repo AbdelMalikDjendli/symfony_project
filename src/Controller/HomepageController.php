@@ -21,8 +21,12 @@ class HomepageController extends AbstractController
     }
 
     #[Route('/homepage/{page}', name: 'app_homepage')]
-    public function index(Request $request, int $page): Response
+    public function index(Request $request, int $page = null): Response
     {
+
+        if($page === null){
+            return $this->redirectToRoute('app_homepage', ['page' => 1]);
+        }
         $eventRepository = $this->entityManager -> getRepository(Event::class);
 
         //récupère depuis l'url le filtrage des five (méthode GET)
