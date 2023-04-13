@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\FormHandler\CreateTeamHandlerr;
 use App\Repository\UserRepository;
+use App\Services\CommonServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,31 +48,15 @@ class TeamController extends AbstractController
     }
 
     #[Route('/user/team/voir/{page}', name: 'app_team_read')]
-    public function read(UserRepository $userRepository, int $page): Response
+    public function read(UserRepository $userRepository, int $page, CommonServices $commonServices): Response
     {
         # appel de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
-
-        # récupération de l'entité user
-        $user = $userRepository -> findOneBy(["email" => $mail]);
-
-        $teams = $user->getTeams();
-
-        # pagination
-        if($page<0){
-            $page = 1;
-        }
-
-        $limit = 10;
-        $debut = ($page*$limit) - $limit;
-        $pagination = array_slice($teams->toArray(),$debut, $limit);
-
-        $nbPage =  ceil(count($teams)/$limit);
-
+        $teams = $commonServices->getUserConnected($userRepository,$mail)->getTeams();
 
         return $this->render('profil/team.html.twig', [
-            'UserTeams'=> $pagination,
-            'nbPage'=>$nbPage,
+            'UserTeams'=> $commonServices->pagination($page,10,$teams)[0],
+            'nbPage'=>$commonServices->pagination($page,10,$teams)[1],
             'currentPage'=>$page
         ]);
 
