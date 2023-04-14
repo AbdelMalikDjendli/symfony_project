@@ -24,19 +24,22 @@ class RatingController extends AbstractController
     }
 
     #[Route('/user/{id}/note', name: 'app_rating', methods: ['GET', 'POST'])]
-    public function index(Request $request, EventRepository $eventRepository, UserRepository $userRepository, EntityManagerInterface $entityManager, int $id, CommonServices $commonServices, RatingFormHandler $formHandler, RatingServices $services): Response
+    public function index(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager, RatingFormHandler $ratingFormHandler, EventRepository $eventRepository, int $id, RatingServices $services, CommonServices $commonServices): Response
     {
         $mail = $this->getUser()->getUserIdentifier();
         $evaluatedUser = $userRepository->find($id);
         if(!$services->verificationForAddNote($id,$commonServices->getUserConnected($userRepository,$mail),$evaluatedUser,$eventRepository)){
             return $this->redirectToRoute('app_homepage');
-       }
+        }
+        $oldNote = $evaluatedUser->getNote();
+        $nbNote = $evaluatedUser->getNbNote();
         $form = $this->createForm(RatingType::class, $evaluatedUser);
         $form->handleRequest($request);
-        # lorsque la requête est envoyée et vérifiée
         if ($form->isSubmitted() && $form->isValid()) {
-            $formHandler->action($form,$evaluatedUser, $commonServices->getUserConnected($userRepository,$mail),$evaluatedUser->getNote(),$evaluatedUser->getNbNote());
-            $formHandler->handleForm($evaluatedUser);
+            $evaluatedUser->setNote($oldNote+$form->get('note')->getData());
+            $evaluatedUser->setNbNote($nbNote+1);
+            $evaluatedUser->addEvaluator($commonServices->getUserConnected($userRepository,$mail));
+            $ratingFormHandler->handleForm($evaluatedUser);
             $this->addFlash('success', 'Votre note a bien été prise en compte.');
             return $this->redirectToRoute('app_profil', ['id' => $evaluatedUser->getId()]);
         }

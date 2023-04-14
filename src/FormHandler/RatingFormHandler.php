@@ -17,14 +17,9 @@ final class RatingFormHandler
         $this->entityManager->flush();
     }
 
-    public function action($form,$evaluatedUser, $user)
+    public function action($evaluatedUser, $user, $oldNote,$nbNote,$note)
     {
-        # recuperation des anciennes valeurs de note et nbnote
-        $oldNote = $evaluatedUser->getNote();
-        $nbNote = $evaluatedUser->getNbNote();
 
-        # récupération de la note depuis le formulaire
-        $note = $form->get('note')->getData();
 
         # mise a jour des données
         $evaluatedUser->setNote($oldNote+$note);
@@ -33,6 +28,8 @@ final class RatingFormHandler
         #ajouter l'evaluateur a evaluator
 
         $evaluatedUser->addEvaluator($user);
+
+        $this->handleForm($evaluatedUser);
     }
 
 }
