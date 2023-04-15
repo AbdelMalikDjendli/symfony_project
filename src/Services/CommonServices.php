@@ -2,17 +2,24 @@
 
 namespace App\Services;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
+
 class CommonServices
 {
-    public function getUserConnected($userRepository,$mail)
+    public function __construct(public UserRepository $userRepository)
+    {
+    }
+
+    public function getUserConnected($mail):User
     {
         # récupération de l'entité user
-        $user = $userRepository -> findOneBy(["email" => $mail]);
+        $user = $this->userRepository->findOneBy(["email" => $mail]);
 
         return $user;
     }
 
-    public function pagination($page, $limit,$results)
+    public function pagination($page, $limit,$results):array
     {
         if($page<0){
             $page = 1;

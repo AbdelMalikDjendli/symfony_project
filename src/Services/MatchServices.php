@@ -2,9 +2,17 @@
 
 namespace App\Services;
 
+use App\Entity\Event;
+use App\Entity\User;
+use App\Repository\EventRepository;
+
 class MatchServices
 {
-    public function verificationForAddResult($match,$eventRepository,$user)
+    public function __construct(public EventRepository $eventRepository)
+    {
+    }
+
+    public function verificationForAddResult(Event $match, User $user):bool
     {
         #Vérifier qu'un resultat n'a pas deja été renseigné
         #Vérifier que le match a bien un invité
@@ -13,7 +21,7 @@ class MatchServices
             return false;
         } elseif(count($match->getTeamsEvent())<=1) {
             return false;
-        } elseif( !in_array($match->getId(),$this->getMatchOrganisatedByUser($eventRepository, $user))) {
+        } elseif( !in_array($match->getId(),$this->getMatchOrganisatedByUser($user))) {
             return false;
         } else {
             return true;
@@ -21,10 +29,10 @@ class MatchServices
 
     }
 
-    public function getMatchOrganisatedByUser($eventRepository,$user)
+    public function getMatchOrganisatedByUser(User $user):array
     {
         # recupération des match organisé par l'utilisateur
-        $userOrganisatedMatch = $eventRepository ->findBy(["organizer" => $user]);
+        $userOrganisatedMatch = $this->eventRepository ->findBy(["organizer" => $user]);
 
         #stockage des id des match organisés par le user dans un tableau
         $idEvents = array();
@@ -35,7 +43,7 @@ class MatchServices
         return $idEvents;
     }
 
-    public function getInvitedAndOrganizer($match)
+    public function getInvitedAndOrganizer(Event $match):array
     {
         $invited = $match->getInvited();
         $organizer = $match->getOrganizer()->getPseudo();

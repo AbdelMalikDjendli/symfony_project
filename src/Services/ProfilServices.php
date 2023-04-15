@@ -9,11 +9,16 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class ProfilServices
 {
-    public function getArrayOfInvitedId($matches, UserRepository $userRepository): array
+    public function __construct(public UserRepository $userRepository,
+                                public EventRepository $eventRepository)
+    {
+    }
+
+    public function getArrayOfInvitedId(array $matches): array
     {
         $invitedId = array();
         foreach($matches as $match){
-            $invited = $userRepository->findby(
+            $invited = $this->userRepository->findby(
                 ['pseudo'=>$match->getInvited()]
             );
             if(count($invited)>0) {
@@ -24,17 +29,17 @@ class ProfilServices
         return $invitedId;
     }
 
-    public function getInfoUserMatch(User $user,EventRepository $eventRepository, int $id):array
+    public function getInfoUserMatch(User $user, int $id):array
     {
         $info = array();
-        $matchJoinded = $eventRepository->findBy(
+        $matchJoinded = $this->eventRepository->findBy(
             ['invited'=>$user->getPseudo()]
         );
-        $matchCreated = $eventRepository->findBy(
+        $matchCreated = $this->eventRepository->findBy(
             ['organizer'=>$id]
         );
-        $matchWin = $eventRepository->findMatchWin($user->getPseudo());
-        $matchLoose = $eventRepository->findMatchLoose($user->getPseudo());
+        $matchWin = $this->eventRepository->findMatchWin($user->getPseudo());
+        $matchLoose = $this->eventRepository->findMatchLoose($user->getPseudo());
 
         $info[0] = $matchJoinded;
         $info[1] = $matchCreated;
@@ -44,7 +49,7 @@ class ProfilServices
         return $info;
     }
 
-    public function getNoteUser(User $user)
+    public function getNoteUser(User $user):int
     {
         $note = NULL;
         $nbNote = $user->getNbNote();
