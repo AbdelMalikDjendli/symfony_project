@@ -8,9 +8,14 @@ use App\Entity\User;
 use App\Form\JoinMatchType;
 use App\Form\MatchCreatorType;
 use App\Form\MatchResulType;
+use App\FormHandler\AddResultFormHandler;
 use App\FormHandler\MatchFormHandler;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
+use App\Services\CommonServices;
+use App\Services\MatchServices;
+use App\Services\ProfilServices;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -75,91 +80,25 @@ class MatchController extends AbstractController
         }
 
     #[Route('user/match/{id}/result', name: 'app_match_result', methods: ['GET', 'POST'])]
-    public function addResult(Request $request, EntityManagerInterface $entityManager, MatchFormHandler $matchFormHandler, int $id){
-        $eventRepository = $entityManager -> getRepository(Event::class);
+    public function addResult(Request $request, AddResultFormHandler $formHandler, int $id, EventRepository $eventRepository, UserRepository $userRepository, CommonServices $commonServices, MatchServices $services)
+    {
         $match = $eventRepository->find($id);
-        #Vérifier qu'un resultat n'a pas deja été renseigné
-
-        if($match->getWinner()!= NULL){
-            return $this->redirectToRoute('app_homepage');
-        }
-
-
-        #Vérifier que le match a bien un invité
-        if(count($match->getTeamsEvent())<=1){
-            return $this->redirectToRoute('app_homepage');
-        }
-
-        $userRepository = $entityManager -> getRepository(User::class);
-
-            # appel de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
-
-
-
-            # récupération de l'entité user
-        $user = $userRepository -> findOneBy(["email" => $mail]);
-
-
-
-        # recupération des match organisé par l'utilisateur
-        $userOrganisatedMatch = $eventRepository ->findBy(["organizer" => $user]);
-
-        #stockage des id des match organisés par le user dans un tableau
-        $idEvents = array();
-        foreach($userOrganisatedMatch as $event ){
-            $idEvents[] = $event->getId();
-        }
-
-        #verification que la personne tentant d'ajouter un resultat est bien organisatrice du match
-        if( !in_array($match->getId(),$idEvents) ){
+        if(!$services->verificationForAddResult($match,$eventRepository,$commonServices->getUserConnected($userRepository,$mail))) {
             return $this->redirectToRoute('app_homepage');
         }
-
-
-
-        #recuperation du pseudo de l'invité et de l'organisateur
-        $invited = $match->getInvited();
-        $organizer = $match->getOrganizer()->getPseudo();
-
-        $form = $this->createForm(MatchResulType::class, $match, ['organizer' => $organizer, 'invited' => $invited]);
-
-            # le formulaire saisit la requête
+        $form = $this->createForm(MatchResulType::class, $match, ['organizer' => $services->getInvitedAndOrganizer($match)[1], 'invited' => $services->getInvitedAndOrganizer($match)[0]]);
         $form->handleRequest($request);
-
-            # lorsque la requête est envoyée et vérifiée
         if ($form->isSubmitted() && $form->isValid()) {
-
-
-            # récupération du gagnant depuis le formulaire
-            $winner = $form->get('winner')->getData();
-
-            # deduire le perdant
-            if($winner == $organizer){
-                $match->setLooser($invited);
-            }
-            else{
-                $match->setLooser($organizer);
-            }
-
-            $this->entityManager->persist($match);
-            $this->entityManager->flush();
-
-
+            $formHandler->action($form,$match,$services->getInvitedAndOrganizer($match)[1],$services->getInvitedAndOrganizer($match)[0]);
+            $formHandler->handleForm($match);
             $this->addFlash('success', 'Le résultat a bien été pris en compte.');
-
-            return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
-
-
-            # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
-            }
-
-            # affichage de la vue du formulaire de création
-            return $this->render('match/result.html.twig', [
-                'form' => $form->createView(),
-            ]);
-
+            return $this->redirectToRoute('app_profil', ['id' => $commonServices->getUserConnected($userRepository,$mail)->getId()]);
         }
+        return $this->render('match/result.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
     #[Route('/user/match/{eventid}/joinmatch', name: 'app_match_join', methods: ['GET', 'POST'])]
     #[Entity('event', options: ['id' => 'eventid'])]
@@ -225,42 +164,15 @@ class MatchController extends AbstractController
     }
 
     #[Route('user/match/voir/{page}', name: 'app_match_read')]
-    public function read(UserRepository $userRepository, EventRepository $eventRepository, int $page): Response
+    public function read(UserRepository $userRepository, EventRepository $eventRepository, int $page, CommonServices $commonServices, ProfilServices $profilServices): Response
     {
-        # appel de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
-
-        # récupération de l'entité user
-        $user = $userRepository -> findOneBy(["email" => $mail]);
-
-        $matches = $eventRepository->findMatchCreatedOrJoinded($user->getId(), $user->getPseudo());
-
-        $invitedId = array();
-        foreach($matches as $match){
-            $invited = $userRepository->findby(
-                ['pseudo'=>$match->getInvited()]
-            );
-
-            if(count($invited)>0) {
-                $invitedId[$match->getInvited()] = $invited[0]->getId();
-            }
-        }
-
-        # pagination
-        if($page<0){
-            $page = 1;
-        }
-
-        $limit = 10;
-        $debut = ($page*$limit) - $limit;
-        $pagination = array_slice($matches,$debut, $limit);
-
-        $nbPage =  ceil(count($matches)/$limit);
+        $matches = $eventRepository->findMatchCreatedOrJoinded($commonServices->getUserConnected($userRepository,$mail)->getId(), $commonServices->getUserConnected($userRepository,$mail)->getPseudo());
 
         return $this->render('profil/mesMatch.html.twig', [
-            'matches' =>$pagination,
-            'invited'=>$invitedId,
-            'nbPage'=>$nbPage,
+            'matches' =>$commonServices->pagination($page,10,$matches)[0],
+            'invited'=>$profilServices->getArrayOfInvitedId($matches,$userRepository),
+            'nbPage'=>$commonServices->pagination($page,10,$matches)[1],
             'currentPage'=>$page
         ]);
     }
