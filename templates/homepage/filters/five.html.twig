@@ -1,0 +1,16 @@
+{% for five in allFives %}
+
+    {# si le five a été coché #}
+    {% if queryParams is not empty and queryParams.fives is defined %}
+        {% set checked = (five.id in queryParams.fives) ? "checked" : ""%}
+    {% else %}
+        {% set checked = "" %}
+    {% endif %}
+
+    <p>
+        <input type="checkbox" name="fives[]" id="five{{ five.id }}" value="{{ five.id }}" {{ checked }}>
+        <label for="five{{ five.id }}">
+            {{ five.name }}
+        </label>
+    </p>
+{% endfor %}

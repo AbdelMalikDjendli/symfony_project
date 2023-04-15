@@ -15,62 +15,35 @@
 
 <div class="container " style="margin:0; padding:0">
     <div class="row">
-    <div class="col-4">
 
-        <div class="card position-fixed" style="top:15%; margin-left: 5%">
+        <div class="col-4">
 
-            <div class="card-header h5"><i class="bi bi-funnel-fill"></i>Filtrage</div>
+            <div class="card position-fixed" style="top:15%; margin-left: 5%">
 
-            <div class="card-body">
-        <form id="filter">
+                <div class="card-header h5">
+                    <i class="bi bi-funnel-fill"></i>Filtrage
+                </div>
 
-            <h6 class=" text-center">Five</h6>
+                <div class="card-body">
+                    {% include 'homepage/filter.html.twig' %}
+                </div>
 
-            {% for five in allFives %}
-                {# si le five a été coché #}
-                {% if queryParams is not empty and queryParams.fives is defined %}
-                    {% set checked = (five.id in queryParams.fives) ? "checked" : ""%}
-                {% else %}
-                    {% set checked = "" %}
-                {% endif %}
-
-                <p><input type="checkbox" name="fives[]" id="five{{ five.id }}" value="{{ five.id }}" {{ checked }}>
-                    <label for="five{{ five.id }}">{{ five.name }}</label></p>
-            {% endfor %}
-
-            <h6 class=" pt-4 text-center">Niveau de jeu</h6>
-            {% for level in allLevels %}
-                {% if queryParams is not empty and queryParams.levels is defined %}
-                    {% set checked = (level in queryParams.levels) ? "checked" : ""%}
-                {% else %}
-                    {% set checked = "" %}
-                {% endif %}
-            <p><input type="checkbox" name="levels[]" id="{{ level }}" value="{{ level }}" {{ checked }}>
-                <label for="{{ level }}">
-                    {% if level == "beginner" %}Débutant
-                    {% elseif level == "intermediate" %}Intermédiaire
-                    {% else %}Confirmé
-                    {% endif %}
-                </label></p>
-            {% endfor %}
-
-            {#  <p><input type="checkbox" name="levels[]" id="intermediate" value="intermediate">
-                <label for="intermediate">Intermédiaire</label></p>
-            <p><input type="checkbox" name="levels[]" id="confirmed" value="confirmed">
-                <label for="confirmed">Confirmé</label></p> #}
-        </form>
             </div>
+
         </div>
+
+        <div class="col-6" id="content">
+            {% include asset('homepage/main_content.html.twig') %}
+        </div>
+
+        <div class="col-4">
+
+
+        </div>
+
     </div>
-    <div class="col-6" id="content">
-        {% include asset('homepage/main_content.html.twig') %}
-    </div>
-<div class="col-4">
 
 </div>
-    </div>
-    </div>
-
 
     {% block javascripts %}
         <script src="{{ asset('js/filters.js') }}"></script>
