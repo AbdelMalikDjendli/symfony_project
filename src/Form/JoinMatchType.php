@@ -22,8 +22,6 @@ class JoinMatchType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
-        //$user = $options['data']->getOrganizer();
         $user = $this->tokenStorage->getToken()->getUser();
 
         $builder
