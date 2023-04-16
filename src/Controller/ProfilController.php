@@ -14,24 +14,31 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProfilController extends AbstractController
 {
-    #[Route('user/profil/{id}', name: 'app_profil')]
-    public function index(UserRepository $userRepository, EventRepository $eventRepository, int $id, ProfilServices $services): Response
+    public function __construct(public UserRepository $userRepository,
+                                public EventRepository $eventRepository,
+
+                                public ProfilServices $profilServices)
     {
-        $user = $userRepository->find($id);
-        $matches = $eventRepository->findMatchCreatedOrJoinded($id, $user->getPseudo());
+    }
+
+    #[Route('user/profil/{id}', name: 'app_profil')]
+    public function index(int $id): Response
+    {
+        $user = $this->userRepository->find($id);
+        $matches = $this->eventRepository->findMatchCreatedOrJoinded($id, $user->getPseudo());
 
         return $this->render('profil/index.html.twig', [
             'UserTeams'=>$user->getTeams(),
             'matches'=>$matches,
-            'invited'=>$services->getArrayOfInvitedId($matches, $userRepository),
+            'invited'=>$this->profilServices->getArrayOfInvitedId($matches),
             'id'=>$id,
             'pseudo'=>$user->getPseudo(),
             'nbMatch'=>count($matches),
-            'nbMatchCreated'=> count($services->getInfoUserMatch($user,$eventRepository,$id)[1]),
-            'nbMatchJoined'=> count($services->getInfoUserMatch($user,$eventRepository,$id)[0]),
-            'nbMatchWin'=>count($services->getInfoUserMatch($user,$eventRepository,$id)[2]),
-            'nbMatchLoose'=>count($services->getInfoUserMatch($user,$eventRepository,$id)[3]),
-            'note'=>$services->getNoteUser($user),
+            'nbMatchCreated'=> count($this->profilServices->getInfoUserMatch($user,$id)[1]),
+            'nbMatchJoined'=> count($this->profilServices->getInfoUserMatch($user,$id)[0]),
+            'nbMatchWin'=>count($this->profilServices->getInfoUserMatch($user,$id)[2]),
+            'nbMatchLoose'=>count($this->profilServices->getInfoUserMatch($user,$id)[3]),
+            'note'=>$this->profilServices->getNoteUser($user),
             'picture'=> $user->getPhotoFilename(),
             'nbNote'=>$user->getNbNote()
         ]);

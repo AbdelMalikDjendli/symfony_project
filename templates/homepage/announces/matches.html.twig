@@ -1,23 +1,30 @@
-{% if matches is null %}
-<p> Aucun match n'est affiché</p>
-{% endif %}
-
 {% for match in matches %}
-    <div class="row w-100 mx-auto rounded mb-3 bg-light border border-success"
-         style="border-width: 0.5px;">
+    <div class="row w-100 mx-auto rounded mb-3 bg-light border border-success" style="border-width: 0.5px;">
 
-        <h1 class="h4 bg-success text-white bg-gradient mb-3 p-2"> {{ match.getMatchName() }}</h1>
-        <p><i class="bi bi-person-fill"></i> Organisateur : <a
-                    href="{{ path('app_profil', { 'id' : match.organizer.id}) }}">{{ match.organizer.pseudo }}</a>
+        <h1 class="h4 bg-success text-white bg-gradient mb-3 p-2">
+            {{ match.getMatchName() }}
+        </h1>
+
+        <p>
+            <i class="bi bi-person-fill"></i> Organisateur :
+            <a href="{{ path('app_profil', { 'id' : match.organizer.id}) }}">
+                {{ match.organizer.pseudo }}
+            </a>
         </p>
-        <p><i class="bi bi-house"></i> Five : {{ match.five.name }}</p>
-        <p><i class="bi bi-bar-chart-fill"></i> Niveau : {{ match.getLabelForLevel() }}</p>
-        {% if app.user %}
-            <div class="d-flex flex-row-reverse">
-                <a type="button" class="w-25 rounded mb-2  btn btn-success" href="{{ path('app_match_join', { 'eventid' : match.id}) }}">Rejoindre</a>
-            </div>
-        {% endif %}
 
+        <p>
+            <i class="bi bi-house"></i> Five : {{ match.five.name }}
+        </p>
+
+        <p>
+            <i class="bi bi-bar-chart-fill"></i> Niveau : {{ match.getLabelForLevel() }}
+        </p>
+
+        {% if app.user %}
+
+            {% include 'homepage/buttons/join_match.html.twig' %}
+
+        {% endif %}
 
     </div>
 {% endfor %}

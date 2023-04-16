@@ -11,7 +11,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class CreateTeamHandlerr
+final class CreateTeamHandler
 {
 
 

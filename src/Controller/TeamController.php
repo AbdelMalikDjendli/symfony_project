@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\FormHandler\CreateTeamHandlerr;
+use App\FormHandler\CreateTeamHandler;
 use App\Repository\UserRepository;
 use App\Services\CommonServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,18 +17,19 @@ use App\Form\CreateTeamType;
 class TeamController extends AbstractController
 {
 
+    public function __construct(
+        public EntityManagerInterface $entityManager,
+
+        public CommonServices $commonServices,
+
+        public CreateTeamHandler $createTeamHandler)
+    {
+    }
 
     #[Route('/user/createteam/', name: 'app_create_team', methods: ['GET', 'POST'])]
-    public function create(Request $request, CreateTeamHandlerr $createTeamHandler, EntityManagerInterface $entityManager): Response
+    public function create(Request $request): Response
     {
-        $userRepository = $entityManager -> getRepository(User::class);
-
-        # appel de l'utilisateur connecté
-        $mail = $this->getUser()->getUserIdentifier();
-
-
-        # récupération de l'entité user
-        $user = $userRepository -> findOneBy(["email" => $mail]);
+        $user = $this->commonServices->getUserConnected($this->getUser()->getUserIdentifier());
 
         $equipe = new Team();
 
@@ -36,7 +37,7 @@ class TeamController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $createTeamHandler->handleForm($equipe, $user);
+            $this->createTeamHandler->handleForm($equipe, $user);
 
             return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
             # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
@@ -48,15 +49,15 @@ class TeamController extends AbstractController
     }
 
     #[Route('/user/team/voir/{page}', name: 'app_team_read')]
-    public function read(UserRepository $userRepository, int $page, CommonServices $commonServices): Response
+    public function read(int $page): Response
     {
         # appel de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
-        $teams = $commonServices->getUserConnected($userRepository,$mail)->getTeams();
+        $teams = $this->commonServices->getUserConnected($mail)->getTeams();
 
         return $this->render('profil/team.html.twig', [
-            'UserTeams'=> $commonServices->pagination($page,10,$teams)[0],
-            'nbPage'=>$commonServices->pagination($page,10,$teams)[1],
+            'UserTeams'=> $this->commonServices->pagination($page,10,$teams)[0],
+            'nbPage'=>$this->commonServices->pagination($page,10,$teams)[1],
             'currentPage'=>$page
         ]);
 

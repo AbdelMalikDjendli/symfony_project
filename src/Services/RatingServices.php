@@ -2,14 +2,22 @@
 
 namespace App\Services;
 
+use App\Entity\User;
+use App\Repository\EventRepository;
+
 class RatingServices
 {
-    public function verificationForAddNote($id,$user,$evaluatedUser,$eventRepository)
+
+    public function __construct(public EventRepository $eventRepository)
+    {
+    }
+
+    public function verificationForAddNote($id,$user,$evaluatedUser):bool
     {
         #Verifie si ils ont deja joué ensemble
         #ne peux pas s'evaluer tout seul
         #peut donner une seul note a un meme utilisateur
-        if(empty($this->getMatchWhereOrganizer($eventRepository,$user,$evaluatedUser)) and empty($this->getMatchWhereInvited($eventRepository,$user,$evaluatedUser))){
+        if(empty($this->getMatchWhereOrganizer($user,$evaluatedUser)) and empty($this->getMatchWhereInvited($user,$evaluatedUser))){
             return false;
         }elseif($id == $user->getId()) {
             return false;
@@ -21,9 +29,9 @@ class RatingServices
 
     }
 
-    public function getMatchWhereOrganizer($eventRepository,$user,$evaluatedUser)
+    public function getMatchWhereOrganizer($user,$evaluatedUser):array
     {
-        $organizerInvited = $eventRepository->findBy([
+        $organizerInvited = $this->eventRepository->findBy([
             "organizer"=>$user,
             "invited"=>$evaluatedUser->getPseudo()
         ]);
@@ -31,9 +39,9 @@ class RatingServices
         return $organizerInvited;
     }
 
-    public function getMatchWhereInvited($eventRepository,$user,$evaluatedUser)
+    public function getMatchWhereInvited($user,$evaluatedUser):array
     {
-        $invitedOrganizer = $eventRepository->findBy([
+        $invitedOrganizer = $this->eventRepository->findBy([
             "organizer"=>$evaluatedUser,
             "invited"=>$user->getPseudo()
         ]);
