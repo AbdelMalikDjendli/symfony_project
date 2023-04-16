@@ -6,8 +6,8 @@ Pour se projet, nous avons utiliser PHP à travers le framework Symfony, CSS à 
 L'IDE sur lequel nous avons développer notre projet est PHPStorm.
 Pour une bonne gestion de notre projet, nous avons utiliser Google Meet, Slack, Whatsapp, GitHub et Trello, afin de s'organiser au mieux.
 
-L'utilsation de notre site est assez intituif. Sur la page d'accueil, vous avez accès aux que vous pouvez rejoindre, uniquement lorsque vous êtes connectés. Depuis votre page du profil, vous avez la possibilité de créer une nouvelle équipe, ainsi que d'ajouter le résultat d'un match que vous avez organiser.
 L'utilsation de notre site est assez intituif. Sur la page d'accueil, vous avez accès aux matchs que vous pouvez rejoindre, uniquement lorsque vous êtes connectés. Depuis votre page du profil, vous avez la possibilité de créer une nouvelle équipe, ainsi que d'ajouter le résultat d'un match que vous avez organiser.
+L'utilsation de notre site est assez intituif. Sur la page d'accueil, vous avez accès aux matchs que vous pouvez rejoindre, uniquement lorsque vous êtes connecté. Depuis votre page du profil, vous avez la possibilité de créer une nouvelle équipe, ainsi que d'ajouter le résultat d'un match que vous avez organiser.
 Vous pouvez aussi vous rendre sur le profil d'un autre utilsateur en cliquant sur nom d'utilsateur, pour y voir ses statistiques, et vous pouvez aussi donner une note à ce joueur, allant de 1 à 5.
 Lors de votre inscirption, soyez attentifs au mail de confirmation que vous recevrez sur MailTrap.
 
