@@ -49,7 +49,7 @@ class ProfilServices
         return $info;
     }
 
-    public function getNoteUser(User $user):int
+    public function getNoteUser(User $user)
     {
         $note = NULL;
         $nbNote = $user->getNbNote();

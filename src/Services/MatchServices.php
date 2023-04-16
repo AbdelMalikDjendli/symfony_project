@@ -54,4 +54,12 @@ class MatchServices
 
         return $info;
     }
+
+    public function setMatch(User $user):Event
+    {
+        $match = new Event();
+        $match->setOrganizer($user);
+
+        return $match;
+    }
 }

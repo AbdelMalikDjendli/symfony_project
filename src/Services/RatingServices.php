@@ -17,7 +17,7 @@ class RatingServices
         #Verifie si ils ont deja joué ensemble
         #ne peux pas s'evaluer tout seul
         #peut donner une seul note a un meme utilisateur
-        if(empty($this->getMatchWhereOrganizer($user,$evaluatedUser)) and empty($this->getMatchWhereInvited($eventRepository,$user,$evaluatedUser))){
+        if(empty($this->getMatchWhereOrganizer($user,$evaluatedUser)) and empty($this->getMatchWhereInvited($user,$evaluatedUser))){
             return false;
         }elseif($id == $user->getId()) {
             return false;

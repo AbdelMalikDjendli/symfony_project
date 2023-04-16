@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Access\UserAccessController;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Form\MatchResulType;
@@ -17,18 +18,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RatingController extends AbstractController
+class RatingController extends UserAccessController
 {
-    public function __construct(public EntityManagerInterface $entityManager)
+    public function __construct(public EntityManagerInterface $entityManager,
+
+                                public UserRepository $userRepository,
+                                public EventRepository $eventRepository,
+
+                                public RatingServices $ratingServices,
+                                public CommonServices $commonServices,
+
+                                public RatingFormHandler $ratingFormHandler)
     {
     }
 
     #[Route('/user/{id}/note', name: 'app_rating', methods: ['GET', 'POST'])]
-    public function index(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager, RatingFormHandler $ratingFormHandler, EventRepository $eventRepository, int $id, RatingServices $services, CommonServices $commonServices): Response
+    public function index(Request $request, int $id): Response
     {
         $mail = $this->getUser()->getUserIdentifier();
-        $evaluatedUser = $userRepository->find($id);
-        if(!$services->verificationForAddNote($id,$commonServices->getUserConnected($userRepository,$mail),$evaluatedUser,$eventRepository)){
+        $evaluatedUser = $this->userRepository->find($id);
+        if(!$this->ratingServices->verificationForAddNote($id,$this->commonServices->getUserConnected($mail),$evaluatedUser)){
             return $this->redirectToRoute('app_homepage');
         }
         $oldNote = $evaluatedUser->getNote();
@@ -38,10 +47,9 @@ class RatingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $evaluatedUser->setNote($oldNote+$form->get('note')->getData());
             $evaluatedUser->setNbNote($nbNote+1);
-            $evaluatedUser->addEvaluator($commonServices->getUserConnected($userRepository,$mail));
-            $ratingFormHandler->handleForm($evaluatedUser);
-            $this->addFlash('success', 'Votre note a bien été prise en compte.');
-            return $this->redirectToRoute('app_profil', ['id' => $evaluatedUser->getId()]);
+            $evaluatedUser->addEvaluator($this->commonServices->getUserConnected($mail));
+            $this->ratingFormHandler->handleForm($evaluatedUser);
+            return $this->redirectToProfil('Votre note a bien été prise en compte.',$evaluatedUser);
         }
         return $this->render('rating/index.html.twig', [
             'form' => $form->createView(),
