@@ -2,10 +2,6 @@
 
 namespace App\FormHandler;
 use App\Entity\Event;
-
-use App\Entity\Five;
-use App\Entity\Team;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 

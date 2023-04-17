@@ -5,22 +5,17 @@ namespace App\Controller;
 
 use App\Controller\Access\UserAccessController;
 use App\Entity\Event;
-use App\Entity\User;
 use App\Form\JoinMatchType;
 use App\Form\MatchCreatorType;
 use App\Form\MatchResulType;
 use App\FormHandler\AddResultFormHandler;
 use App\FormHandler\MatchFormHandler;
 use App\Repository\EventRepository;
-use App\Repository\UserRepository;
 use App\Services\CommonServices;
 use App\Services\MatchServices;
 use App\Services\ProfilServices;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,16 +23,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class MatchController extends UserAccessController
 {
 
-    public function __construct(public EntityManagerInterface $entityManager,
+    public function __construct(
+        public EntityManagerInterface $entityManager,
 
-                                public EventRepository        $eventRepository,
+        public EventRepository        $eventRepository,
 
-                                public CommonServices         $commonServices,
-                                public MatchServices          $matchServices,
-                                public ProfilServices         $profilServices,
+        public CommonServices         $commonServices,
+        public MatchServices          $matchServices,
+        public ProfilServices         $profilServices,
 
-                                public AddResultFormHandler   $addResultFormHandler,
-                                public MatchFormHandler       $matchFormHandler)
+        public AddResultFormHandler   $addResultFormHandler,
+        public MatchFormHandler       $matchFormHandler)
     {
     }
 
@@ -62,7 +58,7 @@ class MatchController extends UserAccessController
         }
 
     #[Route('user/match/{id}/result', name: 'app_match_result', methods: ['GET', 'POST'])]
-    public function addResult(Request $request, int $id)
+    public function addResult(Request $request, int $id):Response
     {
         $match = $this->eventRepository->find($id);
         $mail = $this->getUser()->getUserIdentifier();

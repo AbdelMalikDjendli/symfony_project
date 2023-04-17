@@ -205,8 +205,7 @@ class Event
         $teamName = $this->teamsEvent->get(0)->getName();
         $hourMatch = explode(":",$this->getHour())[0]."h";
         $horaire = $this->getDate()->format('d/m')." à ".$hourMatch;
-        $fiveMatch = $teamName." le ".$horaire;
-        return $fiveMatch;
+        return $teamName." le ".$horaire;
     }
 
     public function getLabelForLevel(): ?string

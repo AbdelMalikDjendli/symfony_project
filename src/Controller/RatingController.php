@@ -3,9 +3,6 @@
 namespace App\Controller;
 
 use App\Controller\Access\UserAccessController;
-use App\Entity\Event;
-use App\Entity\User;
-use App\Form\MatchResulType;
 use App\Form\RatingType;
 use App\FormHandler\RatingFormHandler;
 use App\Repository\EventRepository;
@@ -13,22 +10,22 @@ use App\Repository\UserRepository;
 use App\Services\CommonServices;
 use App\Services\RatingServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RatingController extends UserAccessController
 {
-    public function __construct(public EntityManagerInterface $entityManager,
+    public function __construct(
+        public EntityManagerInterface $entityManager,
 
-                                public UserRepository $userRepository,
-                                public EventRepository $eventRepository,
+        public EventRepository $eventRepository,
+        public UserRepository $userRepository,
 
-                                public RatingServices $ratingServices,
-                                public CommonServices $commonServices,
+        public RatingServices $ratingServices,
+        public CommonServices $commonServices,
 
-                                public RatingFormHandler $ratingFormHandler)
+        public RatingFormHandler $ratingFormHandler)
     {
     }
 

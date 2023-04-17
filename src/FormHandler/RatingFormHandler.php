@@ -17,7 +17,7 @@ final class RatingFormHandler
         $this->entityManager->flush();
     }
 
-    public function action($evaluatedUser, $user, $oldNote,$nbNote,$note)
+    public function action($evaluatedUser, $user, $oldNote,$nbNote,$note):void
     {
 
 

@@ -4,15 +4,12 @@ namespace App\Controller;
 
 use App\Controller\Access\UserAccessController;
 use App\FormHandler\CreateTeamHandler;
-use App\Repository\UserRepository;
 use App\Services\CommonServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Team;
-use App\Entity\User;
 use App\Form\CreateTeamType;
 
 class TeamController extends UserAccessController

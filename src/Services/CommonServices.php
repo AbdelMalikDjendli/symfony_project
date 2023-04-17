@@ -13,10 +13,7 @@ class CommonServices
 
     public function getUserConnected($mail):User
     {
-        # récupération de l'entité user
-        $user = $this->userRepository->findOneBy(["email" => $mail]);
-
-        return $user;
+        return $this->userRepository->findOneBy(["email" => $mail]);
     }
 
     public function pagination($page, $limit,$results):array

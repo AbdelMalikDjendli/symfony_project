@@ -17,7 +17,7 @@ final class AddResultFormHandler
         $this->entityManager->flush();
     }
 
-    public function action($form,$match,$organizer,$invited)
+    public function action($form,$match,$organizer,$invited):void
     {
         # récupération du gagnant depuis le formulaire
         $winner = $form->get('winner')->getData();

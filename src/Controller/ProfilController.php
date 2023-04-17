@@ -2,21 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use App\Services\ProfilServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProfilController extends AbstractController
 {
-    public function __construct(public UserRepository $userRepository,
-                                public EventRepository $eventRepository,
+    public function __construct(
+        public UserRepository $userRepository,
+        public EventRepository $eventRepository,
 
-                                public ProfilServices $profilServices)
+        public ProfilServices $profilServices)
     {
     }
 

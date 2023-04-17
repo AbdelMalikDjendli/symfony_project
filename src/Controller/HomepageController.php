@@ -2,15 +2,10 @@
 
 namespace App\Controller;
 
-use App\Controller\Access\UserAccessController;
 use App\Controller\Ajax\AjaxHomepageController;
-use App\Entity\Event;
-use App\Entity\User;
 use App\Repository\FiveRepository;
 use App\Services\AnnouncesServices;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,9 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AjaxHomepageController
 {
 
-    public function __construct(public EntityManagerInterface $entityManager,
-                                public FiveRepository $fiveRepository,
-                                public AnnouncesServices $announcesServices)
+    public function __construct(
+        public EntityManagerInterface $entityManager,
+        public FiveRepository $fiveRepository,
+        public AnnouncesServices $announcesServices)
     {
     }
 

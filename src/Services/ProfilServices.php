@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Entity\User;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
-use phpDocumentor\Reflection\Types\Integer;
 
 class ProfilServices
 {

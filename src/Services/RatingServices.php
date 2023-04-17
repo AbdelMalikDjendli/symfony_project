@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\User;
 use App\Repository\EventRepository;
 
 class RatingServices
