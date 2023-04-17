@@ -38,7 +38,7 @@ class RatingController extends UserAccessController
         $mail = $this->getUser()->getUserIdentifier();
         $evaluatedUser = $this->userRepository->find($id);
         if(!$this->ratingServices->verificationForAddNote($id,$this->commonServices->getUserConnected($mail),$evaluatedUser)){
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToHomepage("Vous avez déjà noté ce joueur.", false);
         }
         $oldNote = $evaluatedUser->getNote();
         $nbNote = $evaluatedUser->getNbNote();
@@ -49,7 +49,7 @@ class RatingController extends UserAccessController
             $evaluatedUser->setNbNote($nbNote+1);
             $evaluatedUser->addEvaluator($this->commonServices->getUserConnected($mail));
             $this->ratingFormHandler->handleForm($evaluatedUser);
-            return $this->redirectToProfil('Votre note a bien été prise en compte.',$evaluatedUser);
+            return $this->redirectToProfil($evaluatedUser, 'Votre note a bien été prise en compte.');
         }
         return $this->render('rating/index.html.twig', [
             'form' => $form->createView(),

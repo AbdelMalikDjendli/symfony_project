@@ -9,7 +9,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class CreateMatchFormHandler
+final class MatchFormHandler
 {
     public function __construct(public EntityManagerInterface $entityManager,
                                 public ManagerRegistry $doctrine
@@ -19,7 +19,7 @@ final class CreateMatchFormHandler
     }
     public function handleForm($form, Event $match):void
     {
-        $team = $form->get('teamsEvent')->getData();
+        $team = $form->get('teams_event')->getData();
         $this->entityManager->persist($team);
 
         $match->addTeam($team);

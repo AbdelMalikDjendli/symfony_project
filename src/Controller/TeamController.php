@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Access\UserAccessController;
 use App\FormHandler\CreateTeamHandler;
 use App\Repository\UserRepository;
 use App\Services\CommonServices;
@@ -14,7 +15,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Form\CreateTeamType;
 
-class TeamController extends AbstractController
+class TeamController extends UserAccessController
 {
 
     public function __construct(
@@ -31,16 +32,14 @@ class TeamController extends AbstractController
     {
         $user = $this->commonServices->getUserConnected($this->getUser()->getUserIdentifier());
 
-        $equipe = new Team();
+        $team = new Team();
 
-        $form = $this->createForm(CreateTeamType::class, $equipe);
+        $form = $this->createForm(CreateTeamType::class, $team);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->createTeamHandler->handleForm($equipe, $user);
-
-            return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
-            # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
+            $this->createTeamHandler->handleForm($team, $user);
+            return $this->redirectToProfil($user, "Votre équipe a bien été créée.");
         }
 
         return $this->render('team/createteam.html.twig', [
@@ -51,7 +50,6 @@ class TeamController extends AbstractController
     #[Route('/user/team/voir/{page}', name: 'app_team_read')]
     public function read(int $page): Response
     {
-        # appel de l'utilisateur connecté
         $mail = $this->getUser()->getUserIdentifier();
         $teams = $this->commonServices->getUserConnected($mail)->getTeams();
 

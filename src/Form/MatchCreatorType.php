@@ -43,7 +43,7 @@ class MatchCreatorType extends AbstractType
 
                     ]
             )
-            ->add('teamsEvent',
+            ->add('teams_event',
                 EntityType::class, [
                     'mapped' => false,
                     'class' => Team::class,

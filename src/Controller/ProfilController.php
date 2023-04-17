@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Handler\ProfilHandler;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use App\Services\ProfilServices;

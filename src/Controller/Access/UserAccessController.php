@@ -14,10 +14,29 @@ class UserAccessController extends AbstractController {
         }
     }
 
-    public function redirectToProfil($notification, User $user):Response
+    public function redirectToProfil(User $user, $notification = null, bool $success = true):Response
     {
-        $this->addFlash('success', $notification);
+        if($notification != null){
+            if($success) {
+                $this->addFlash('success', $notification);
+            }
+            else{
+                $this->addFlash('danger', $notification);
+            }
+        }
         return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
+    }
+
+    public function redirectToHomepage($notification = null, bool $success = true):Response
+    {
+        if($notification != null) {
+            if ($success) {
+                $this->addFlash('success', $notification);
+            } else {
+                $this->addFlash('danger', $notification);
+            }
+        }
+        return $this->redirectToRoute('app_homepage', ['page' => 1]);
     }
 
 

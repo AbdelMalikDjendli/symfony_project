@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 
+use App\Controller\Access\UserAccessController;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Form\JoinMatchType;
 use App\Form\MatchCreatorType;
 use App\Form\MatchResulType;
 use App\FormHandler\AddResultFormHandler;
-use App\FormHandler\CreateMatchFormHandler;
 use App\FormHandler\MatchFormHandler;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
@@ -25,20 +25,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MatchController extends AbstractController
+class MatchController extends UserAccessController
 {
 
     public function __construct(public EntityManagerInterface $entityManager,
 
-                                public EventRepository $eventRepository,
-                                public UserRepository $userRepository,
+                                public EventRepository        $eventRepository,
 
-                                public CommonServices $commonServices,
-                                public MatchServices $matchServices,
-                                public ProfilServices $profilServices,
+                                public CommonServices         $commonServices,
+                                public MatchServices          $matchServices,
+                                public ProfilServices         $profilServices,
 
-                                public AddResultFormHandler $addResultFormHandler,
-                                public CreateMatchFormHandler $createMatchFormHandler)
+                                public AddResultFormHandler   $addResultFormHandler,
+                                public MatchFormHandler       $matchFormHandler)
     {
     }
 
@@ -52,8 +51,7 @@ class MatchController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->createMatchFormHandler->handleForm($form,$match);
-
+            $this->matchFormHandler->handleForm($form,$match);
             $this->addFlash('success', 'Votre match a bien été créé.');
             return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
         }
@@ -89,45 +87,21 @@ class MatchController extends AbstractController
     //#[Entity('user', options: ['id' => 'userid'])]
     public function join(Request $request, Event $event): Response
     {
-        // on ne doit plus pouvoir rejoindre un match si il est complet
         if($event->getInvited() != NULL){
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToHomepage("Le match à déjà été rejoint.", false);
         }
 
-        $user = $this->userRepository->findOneBy(["email" => $this->getUser()->getUserIdentifier()]);
-        $pseudo = $this->userRepository->findPseudoById($user);
+        $user = $this->commonServices->getUserConnected($this->getUser()->getUserIdentifier());
+        $event->setInvited($user->getPseudo());
 
-
-
-        # indique l'utilisateur qui crée le match
-        $event->setInvited($pseudo);
-
-
-        #
         $joinform = $this->createForm(JoinMatchType::class, $event);
-
-        # le formulaire saisit la requête
         $joinform->handleRequest($request);
 
-        # lorsque la requête est envoyée et vérifiée
         if ($joinform->isSubmitted() && $joinform->isValid()) {
-
-            # récupération de l'objet team depuis le formulaire
-            $team = $joinform->get('teams_event')->getData();
-            $this->entityManager->persist($team);
-
-            # gestion des données reçues
-            $event->addTeam($team);
-            $this->entityManager->persist($event);
-            $this->entityManager->flush();
-
-            $this->addFlash('success', 'Vous avez rejoint le match avec succès.');
-
-            return $this->redirectToRoute('app_profil', ['id' => $user->getId()]);
-            # rediriger maintenant le formulaire (une fois envoyé) vers la page d'accueil ou sur la page du match
+            $this->matchFormHandler->handleForm($joinform, $event);
+            return $this->redirectToProfil($user, "Vous avez rejoint le match avec succès.");
         }
 
-        # affichage de la vue du formulaire de création
         return $this->render('joinmatch/joinmatch.html.twig', [
             'joinform' => $joinform->createView(),
         ]);

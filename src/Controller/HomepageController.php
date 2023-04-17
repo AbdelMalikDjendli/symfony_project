@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Controller\Access\UserAccessController;
+use App\Controller\Ajax\AjaxHomepageController;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Repository\FiveRepository;
@@ -13,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomepageController extends AbstractController
+class HomepageController extends AjaxHomepageController
 {
 
     public function __construct(public EntityManagerInterface $entityManager,
@@ -25,21 +27,19 @@ class HomepageController extends AbstractController
     #[Route('/homepage/{page}', name: 'app_homepage')]
     public function index(Request $request, int $page = null): Response
     {
+
         if($page === null){
-            return $this->redirectToRoute('app_homepage', ['page' => 1]);
+            return $this->redirectToHomepage();
         }
 
         $allMatches = $this->announcesServices->getAllJoignableMatchs($this->getUser(), $request -> get("fives"), $request -> get("levels"));
-        $matchsToShow = $this->announcesServices->applyPaginationToAnnounces($allMatches, $page, 3);
         $limit = 3;
+        $matchsToShow = $this->announcesServices->applyPaginationToAnnounces($allMatches, $page, 3);
 
         if($request -> get('ajax') == 1){
-            return new JsonResponse([
-                'content' => $this->renderView('homepage/main_content.html.twig', [
-                        'matches' => $matchsToShow, 'currentPage' => $page, 'nbPage' => ceil(count($allMatches)/$limit)
-                    ])
-            ]);
+            return $this->updateHomepageContent($matchsToShow, $page, ceil(count($allMatches)/$limit));
         }
+
         return $this->render('homepage/index.html.twig', [
             'matches' => $matchsToShow,
             'allFives' => $this->fiveRepository -> findAll(),

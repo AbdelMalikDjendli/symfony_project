@@ -1,12 +1,16 @@
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
 {% if app.user %}
 
     {% include 'homepage/buttons/create_match.html.twig' %}
 
-{% else %}
+{% endif %}
 
 <div class="container column mt-3 ">
-
-    {% endif %}
 
     <div>
         {% include asset('homepage/announces/matches.html.twig') %}
