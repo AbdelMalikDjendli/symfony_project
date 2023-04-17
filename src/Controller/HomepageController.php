@@ -29,8 +29,8 @@ class HomepageController extends AjaxHomepageController
         }
 
         $allMatches = $this->announcesServices->getAllJoignableMatchs($this->getUser(), $request -> get("fives"), $request -> get("levels"));
-        $limit = 3;
-        $matchsToShow = $this->announcesServices->applyPaginationToAnnounces($allMatches, $page, 3);
+        $limit = 5;
+        $matchsToShow = $this->announcesServices->applyPaginationToAnnounces($allMatches, $page, $limit);
 
         if($request -> get('ajax') == 1){
             return $this->updateHomepageContent($matchsToShow, $page, ceil(count($allMatches)/$limit));
