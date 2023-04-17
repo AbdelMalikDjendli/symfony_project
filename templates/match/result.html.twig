@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <section class = "container bg-light rounded my-3">
+        <div class = "row text-center">
+            {% for message in app.flashes('result') %}
+                <div class = "col-12 my-3 text-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class = "col-12 my-3 h2 text-success">
+                {{ form_label(form.winner) }}
+            </div>
+            <div class = "col-12 my-3">
+                {{ form_widget(form.winner) }}
+            </div>
+            <div class = "col-12 my-3">
+                <button type="submit" class="btn btn-lg btn-success my-3">Valider</button>
+            </div>
+
+        </div>
+    </section>
+    {{ form_end(form) }}
+{% endblock %}
+

@@ -1,20 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
+{% block title %}Accueil{% endblock %}
+
+{# variables personnalisées #}
+{% set queryParams = app.request.query.all %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{{ asset('public/css/style.js') }}">
+
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container " style="margin:0; padding:0">
+    <div class="row">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/symfony_project/src/Controller/HomepageController.php'|file_link(0) }}">src/Controller/HomepageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/symfony_project/templates/homepage/index.html.twig'|file_link(0) }}">templates/homepage/index.html.twig</a></code></li>
-    </ul>
+        <div class="col-4">
+
+            <div class="card position-fixed" style="top:15%; margin-left: 5%">
+
+                <div class="card-header h5">
+                    <i class="bi bi-funnel-fill"></i>Filtrage
+                </div>
+
+                <div class="card-body">
+                    {% include 'homepage/filter.html.twig' %}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-6" id="content">
+            {% include asset('homepage/main_content.html.twig') %}
+        </div>
+
+        <div class="col-4">
+
+
+        </div>
+
+    </div>
+
 </div>
-{% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/filters.js') }}"></script>
+    {% endblock %}
+
+
+    {% endblock %}
+

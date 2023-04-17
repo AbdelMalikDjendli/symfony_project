@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <section class="container my-3">
+    <div class="row text-center my-3 ">
+        <!-- affichage du message de confirmation -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="coverPicture col-12 rounded">
+            {% if picture %}
+                <img src="{{ asset('/images/' ~ picture) | imagine_filter('my_thumb') }}" alt="Photo de profil de {{ app.user.pseudo }}" class="rounded-circle my-3">
+            {% else %}
+                <img src="{{ asset('images/logovert.jpg') }}" alt="Photo de profil par défaut" width="150" height="150" class="rounded-circle my-3">
+            {% endif %}
+            <h2 class=" text-white">{{ pseudo }}</h2>
+            <div class = "my-3">
+                {% for i in 0..4 %}
+                    {%if note-loop.index>=0 %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFFFFF" class="bi bi-star-fill" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFFFFF" class="bi bi-star" viewBox="0 0 16 16">
+                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                        </svg>
+                    {% endif %}
+                {% endfor %}
+                <small class="text-muted mx-2">{{ nbNote }} note(s)</small>
+            </div>
+
+            {% if app.user.id != id %}
+                <a href = "{{ path('app_rating',{id : id}) }}">
+                    <button class="btn btn-success text-wite my-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FFFFFF" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        Ajouter une note
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row text-center">
+    <div class="col-12 bg-light my-3 mx-1 rounded">
+        <h3 class="profilTitle my-3 bg-success rounded text-white">Statistiques</h3>
+        <table class="table">
+            <thead>
+            <th>Matchs</th>
+            <th>Organisés</th>
+            <th>Rejoins</th>
+            <th>Victoires</th>
+            <th>Défaites</th>
+            </thead>
+            <tbody>
+            <td>{{ nbMatch }}</td>
+            <td>{{ nbMatchCreated }}</td>
+            <td>{{ nbMatchJoined }}</td>
+            <td>{{ nbMatchWin }}</td>
+            <td>{{ nbMatchLoose }}</td>
+            </tbody>
+        </table>
+    </div>
+
+
+    {% if app.user.id == id %}
+        <div class="col-12 bg-light my-3 mx-1 rounded">
+            <h3 class="profilTitle my-3 bg-success rounded text-white">Mes matchs</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>heure</th>
+                    <th>lieu</th>
+                    <th>Équipes</th>
+                    <th>Organisateur</th>
+                    <th>Invité</th>
+                    <th>Résultat</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for match in matches|slice(0,5) %}
+                    <tr>
+                        <td>{{ match.date|date('d/m/Y') }}</td>
+                        <td>{{ match.hour }}</td>
+                        <td>{{ match.five.name }}</td>
+                        <td>
+                            {% if match.teamsEvent|length > 1 %}
+                                {{ match.teamsEvent[0].name }} VS {{ match.teamsEvent[1].name }}
+                            {% else %}
+                                En attente d'un invité
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ path('app_profil', {id: match.organizer.id}) }}"
+                               class="link-success">{{ match.organizer.pseudo }}</a></td>
+                        <td>
+                            {% if match.teamsEvent|length > 1 %}
+                                <a href="{{ path('app_profil', {id: invited[match.invited]}) }}"
+                                   class="link-success">{{ match.invited }}</a>
+                            {% else %}
+                                En attente d'un invité
+                            {% endif %}
+                        </td>
+                        {% if match.winner is not null %}
+                            {% if app.user.pseudo ==  match.winner %}
+                                <th class=" text-success">
+                                    Victoire
+                                </th>
+                            {% else %}
+                                <th class="text-danger">
+                                    Défaite
+                                </th>
+                            {% endif %}
+                        {% else %}
+                            {% if app.user.id == match.organizer.id and app.user.id == id and match.teamsEvent|length > 1 %}
+                                <td>
+                                    <a href="{{ path('app_match_result', {id: match.id}) }}">
+                                        <button class="btn btn-success">Ajouter un gagnant</button>
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    En attente d'un résultat
+                                </td>
+                            {% endif %}
+                        {% endif %}
+
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{path('app_match_read',{'page':1})}}" class="link-success">Voir plus</a>
+        </div>
+        <div class="col-12 bg-light my-3 mx-1 rounded">
+            <h3 class="profilTitle my-3 bg-success rounded text-white">Mes équipes</h3>
+            <a href="{{ path('app_create_team',{id:app.user.id}) }}" class="link-success">
+                <button class="btn btn-success my-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FFFFFF" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                    Ajouter une équipe
+                </button>
+            </a>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom de l'équipe</th>
+                    <th>Joueur 1</th>
+                    <th>Joueur 2</th>
+                    <th>Joueur 3</th>
+                    <th>Joueur 4</th>
+                    <th>Joueur 5</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for team in  UserTeams|slice(0,5) %}
+                    <tr>
+                        <td>{{ team.name }}</td>
+                        <td>{{ team.player1 }}</td>
+                        <td>{{ team.player2 }}</td>
+                        <td>{{ team.player3 }}</td>
+                        <td>{{ team.player4 }}</td>
+                        <td>{{ team.player5 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href='{{path('app_team_read',{'page':1})}}' class="link-success">Voir plus</a>
+        </div>
+
+        </div>
+        </section>
+    {% endif %}
+{% endblock %}

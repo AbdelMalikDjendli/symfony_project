@@ -1,0 +1,14 @@
+{% for level in allLevels %}
+    {% if queryParams is not empty and queryParams.levels is defined %}
+        {% set checked = (level in queryParams.levels) ? "checked" : ""%}
+    {% else %}
+        {% set checked = "" %}
+    {% endif %}
+    <p><input type="checkbox" name="levels[]" id="{{ level }}" value="{{ level }}" {{ checked }}>
+        <label for="{{ level }}">
+            {% if level == "beginner" %}Débutant
+            {% elseif level == "intermediate" %}Intermédiaire
+            {% else %}Confirmé
+            {% endif %}
+        </label></p>
+{% endfor %}

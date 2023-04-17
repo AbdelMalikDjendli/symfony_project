@@ -1,0 +1,33 @@
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% if app.user %}
+
+    {% include 'homepage/buttons/create_match.html.twig' %}
+
+{% endif %}
+
+<div class="container column mt-3 ">
+
+    <div>
+        {% include asset('homepage/announces/matches.html.twig') %}
+    </div>
+
+</div>
+
+{% set queryParams = app.request.query.all %}
+
+{% if queryParams is not empty %}
+
+    {% set queryString = "?" ~ queryParams|filter((v,k) => k != "ajax")|url_encode %}
+
+{% else %}
+
+    {% set queryString = "" %}
+
+{% endif %}
+
+{% include asset('homepage/announces/pagination.html.twig') %}

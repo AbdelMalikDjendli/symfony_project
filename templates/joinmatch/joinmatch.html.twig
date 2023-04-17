@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}Rejoins le match{% endblock %}
+
+{% block body %}
+
+<section class="container my-3 bg-light rounded">
+    <div class = 'row'>
+        <div class='col'>
+
+
+            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Rejoins le match</h2>
+
+            {{ form_start(joinform) }}
+
+            <fieldset>
+
+            <div class="my-3 selectpicker">
+                {{ form_row(joinform.teams_event)}}
+            </div>
+
+                {% if app.user.getTeams() is empty %}
+                <div class="alert alert-danger" role="alert">
+                <p>Veuillez créer une équipe dans votre profil.</p>
+                {% endif %}
+                </div>
+            </fieldset>
+
+
+
+            <div class="text-center"><button type="submit" class="btn btn-lg btn-success my-3">Rejoins le match</button></div>
+
+            {{ form_end(joinform) }}
+
+    </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+.profilTitle{
+   height: 40px;
+}
+
+.title{
+   font-family: "Comic Sans MS";
+}
+
+.coverPicture{
+   background-image: url('../images/photoDeCouverture.jpg');
+   background-size : cover;
+   background-position: center;
+   background-repeat: no-repeat;
+
+}
+
+.victoire{
+   background-color: #00FF00;
+}
+
+
+/*
+footer{
+   left: 0;
+   bottom: 0;
+   width: 100%;
+}
+
+*/

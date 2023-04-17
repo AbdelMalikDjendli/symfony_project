@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'inscrire{% endblock %}
+
+{% block body %}
+
+<section class="container my-3 bg-light rounded">
+    <div class = 'row'>
+        <div class='col'>
+
+            <h2 class="mb-3 font-weight-normal text-success text-center my-3">Inscription</h2>
+
+            {{ form_start(registrationForm) }}
+
+           <fieldset>
+               <legend class="text-center">
+                   <img src="{{ asset("images/person.svg") }}" alt="person" width="22" height="22">
+                   Mon identité
+               </legend>
+               <div class="form-control-file">
+                      {{ form_row(registrationForm.photo, {
+                          label: 'Photo de profil'
+
+                   }) }}
+               </div>
+               <div class="my-3">{{ form_row(registrationForm.lastName, {
+                       label: 'Nom'
+                   }) }}
+               </div>
+               <div class="my-3">
+                   {{ form_row(registrationForm.firstName, {
+                       label: 'Prénom'
+                   }) }}
+               </div>
+           </fieldset>
+            <fieldset >
+                <legend class="text-center">
+                    <img src="{{ asset("images/info-circle.svg") }}" alt="info" width="22" height="22">
+                    Mes coordonnées
+                </legend>
+                <div class="my-3">
+                    {{ form_row(registrationForm.ville, {
+                        label: 'Ville'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.codePostal, {
+                        label: 'Code postal'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.numTel, {
+                        label: 'Numéro de téléphone'
+                    }) }}
+                </div>
+            </fieldset>
+            <fieldset >
+                <legend class="text-center">
+                    <img src="{{ asset("images/box-arrow-in-right.svg") }}" alt="id" width="22" height="22">
+                    Mes identifiants
+                </legend>
+                <div class="my-3">
+                    {{ form_row(registrationForm.email, {
+                        label:'E-mail'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Mot de passe'
+                    }) }}
+                </div>
+                <div class="my-3">
+                    {{ form_row(registrationForm.pseudo, {
+                        label: 'Nom d\'utilisateur'
+                    }) }}
+                </div>
+            </fieldset>
+
+            <div class="text-center"><button type="submit" class="btn btn-lg btn-success my-3">S'inscrire</button></div>
+
+            {{ form_end(registrationForm) }}
+
+        </div>
+{% endblock %}
